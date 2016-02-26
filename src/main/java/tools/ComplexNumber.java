@@ -54,4 +54,13 @@ public class ComplexNumber {
     public double getImaginary() {
         return imaginary;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ComplexNumber that = (ComplexNumber) o;
+        return this.real == (that.getReal()) && this.imaginary == (that.getImaginary());
+    }
+
 }
