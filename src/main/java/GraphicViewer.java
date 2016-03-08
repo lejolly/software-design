@@ -3,6 +3,9 @@ import tools.ComplexNumber;
 import javax.swing.*;
 import java.awt.*;
 
+/*
+* Code adapted from: https://github.com/joni/fractals/blob/master/mandelbrot/MandelbrotColor.java
+* */
 public class GraphicViewer extends JPanel {
 
     private final int WINDOW_WIDTH = 1280;
@@ -24,19 +27,20 @@ public class GraphicViewer extends JPanel {
 
         for (int row = 0; row < WINDOW_HEIGHT; row++) {
             for (int col = 0; col < WINDOW_WIDTH; col++) {
-                ComplexNumber complexNumber = new ComplexNumber(((col - (WINDOW_WIDTH / 2)) * 4.0) / WINDOW_WIDTH,
+                ComplexNumber baseNumber = new ComplexNumber(((col - (WINDOW_WIDTH / 2)) * 4.0) / WINDOW_WIDTH,
                         ((row - (WINDOW_HEIGHT / 2)) * 4.0) / WINDOW_WIDTH);
-//                ComplexNumber complexNumber = new ComplexNumber(-2.25, -1.5);
-//                ComplexNumber complexNumber = new ComplexNumber(0.75, 1.5);
-                double x = 0;
-                double y = 0;
+                ComplexNumber tempNumber = new ComplexNumber(0, 0);
                 int iteration = 0;
-                while (((x * x) + (y * y)) < 4 && iteration < max) {
-                    double newX = (x * x) - (y * y) + complexNumber.getReal();
-                    y = 2 * x * y + complexNumber.getImaginary();
-                    x = newX;
+
+                while (tempNumber.getAbsolute() < 2 && iteration < max) {
+                    tempNumber = new ComplexNumber(
+                            (tempNumber.getReal() * tempNumber.getReal()) -
+                                    (tempNumber.getImaginary() * tempNumber.getImaginary())
+                                    + baseNumber.getReal(),
+                            2 * tempNumber.getReal() * tempNumber.getImaginary() + baseNumber.getImaginary());
                     iteration++;
                 }
+
                 if (iteration < max) {
                     graphics.setColor(new Color(colors[iteration]));
                     graphics.drawRect(col, row, 1, 1);
