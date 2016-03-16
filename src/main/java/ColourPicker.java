@@ -5,12 +5,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 
+@SuppressWarnings("FieldCanBeLocal")
 public class ColourPicker extends JPanel {
 
-    private final int WINDOW_WIDTH = 400;
     private final int WINDOW_HEIGHT = 400;
+    private final int WINDOW_WIDTH = 400;
 
-    private ColourBean currentColour;
+    private final ColourBean currentColour;
     private JMenuBar menuBar;
 
     public ColourPicker() {
@@ -19,9 +20,13 @@ public class ColourPicker extends JPanel {
         setPreferredSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT));
         initializeComponents();
         initializeMenuBar();
+
+        // Toggle colour
+        currentColour.setColour(Color.WHITE);
+        currentColour.setColour(Color.BLACK);
     }
 
-    public void initializeMenuBar() {
+    private void initializeMenuBar() {
         menuBar = new JMenuBar();
 
         JMenu fileMenu = new JMenu("File");
@@ -46,7 +51,7 @@ public class ColourPicker extends JPanel {
         menuBar.add(attributesMenu);
     }
 
-    public void initializeComponents() {
+    private void initializeComponents() {
         JPanel bottom = new JPanel();
         ColourPanel colourPanel = new ColourPanel(currentColour);
 
@@ -64,14 +69,20 @@ public class ColourPicker extends JPanel {
         radioButtons.add(new ColourRadioButton("orange", Color.ORANGE, currentColour));
         radioButtons.add(new ColourRadioButton("black", Color.BLACK, currentColour));
 
+        JPanel buttons = new JPanel();
+        buttons.setLayout(new BoxLayout(buttons, BoxLayout.Y_AXIS));
+        buttons.add(new ColourButton(true, currentColour));
+        buttons.add(new ColourButton(false, currentColour));
+
         bottom.add(colourPanel);
         bottom.add(radioButtons);
+        bottom.add(buttons);
 
         this.add(bottom);
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
     }
 
-    public JPanel createColourSelectionPanel(Color colour) {
+    private JPanel createColourSelectionPanel(Color colour) {
         JPanel panel = new JPanel();
         ColourScrollBar scrollBar = new ColourScrollBar(colour, currentColour);
         ColourTextField textField = new ColourTextField(colour, currentColour);

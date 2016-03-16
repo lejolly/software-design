@@ -10,8 +10,8 @@ import java.beans.PropertyChangeListener;
 
 public class ColourRadioButton extends JRadioButton implements PropertyChangeListener {
 
-    private ColourRadioButton that = this;
-    private Color colour;
+    private final ColourRadioButton that = this;
+    private final Color colour;
 
     public ColourRadioButton(String name, final Color colour, final ColourBean colourBean) {
         super(name);
@@ -20,7 +20,7 @@ public class ColourRadioButton extends JRadioButton implements PropertyChangeLis
         this.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                colourBean.setColour(that.colour, this);
+                colourBean.setColour(that.colour);
             }
         });
     }

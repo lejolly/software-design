@@ -11,8 +11,8 @@ import java.beans.PropertyChangeListener;
 
 public class ColourScrollBar extends JScrollBar implements PropertyChangeListener {
 
-    private ColourScrollBar that = this;
-    private Color colour;
+    private final ColourScrollBar that = this;
+    private final Color colour;
 
     public ColourScrollBar(final Color colour, final ColourBean colourBean) {
         super(Adjustable.HORIZONTAL, 0, 1, 0, 256);
@@ -26,8 +26,7 @@ public class ColourScrollBar extends JScrollBar implements PropertyChangeListene
                 public void adjustmentValueChanged(AdjustmentEvent e) {
                     colourBean.setColour(new Color(that.getValue(),
                             colourBean.getColour().getGreen(),
-                            colourBean.getColour().getBlue()),
-                            this);
+                            colourBean.getColour().getBlue()));
                 }
             });
         } else if (this.colour.equals(Color.GREEN)) {
@@ -36,8 +35,7 @@ public class ColourScrollBar extends JScrollBar implements PropertyChangeListene
                 public void adjustmentValueChanged(AdjustmentEvent e) {
                     colourBean.setColour(new Color(colourBean.getColour().getRed(),
                             that.getValue(),
-                            colourBean.getColour().getBlue()),
-                            this);
+                            colourBean.getColour().getBlue()));
                 }
             });
         } else if (this.colour.equals(Color.BLUE)) {
@@ -46,8 +44,7 @@ public class ColourScrollBar extends JScrollBar implements PropertyChangeListene
                 public void adjustmentValueChanged(AdjustmentEvent e) {
                     colourBean.setColour(new Color(colourBean.getColour().getRed(),
                             colourBean.getColour().getGreen(),
-                            that.getValue()),
-                            this);
+                            that.getValue()));
                 }
             });
         }

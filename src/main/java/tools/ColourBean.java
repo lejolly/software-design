@@ -6,7 +6,7 @@ import java.beans.PropertyChangeListener;
 
 public class ColourBean {
 
-    private SwingPropertyChangeSupport swingPropertyChangeSupport = new SwingPropertyChangeSupport(this);
+    private final SwingPropertyChangeSupport swingPropertyChangeSupport = new SwingPropertyChangeSupport(this);
     private Color colour = Color.BLACK;
 
     public void addPropertyChangeListener(PropertyChangeListener propertyChangeListener) {
@@ -21,9 +21,10 @@ public class ColourBean {
         return colour;
     }
 
-    public void setColour(Color colour, Object source) {
+    public void setColour(Color colour) {
+        Color oldColour = this.colour;
         this.colour = colour;
-        this.swingPropertyChangeSupport.firePropertyChange("colour", source, this.colour);
+        this.swingPropertyChangeSupport.firePropertyChange("colour", oldColour, this.colour);
     }
 
 }

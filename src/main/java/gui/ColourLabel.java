@@ -9,7 +9,7 @@ import java.beans.PropertyChangeListener;
 
 public class ColourLabel extends JLabel implements PropertyChangeListener {
 
-    private Color colour;
+    private final Color colour;
 
     public ColourLabel(final Color colour, final ColourBean colourBean) {
         this.colour = colour;

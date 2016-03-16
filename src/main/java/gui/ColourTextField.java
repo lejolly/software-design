@@ -10,8 +10,8 @@ import java.beans.PropertyChangeListener;
 
 public class ColourTextField extends JTextField implements PropertyChangeListener {
 
-    private ColourTextField that = this;
-    private Color colour;
+    private final ColourTextField that = this;
+    private final Color colour;
 
     public ColourTextField(final Color colour, final ColourBean colourBean) {
         this.colour = colour;
@@ -26,8 +26,7 @@ public class ColourTextField extends JTextField implements PropertyChangeListene
                         if (value >= 0 && value <= 255) {
                             colourBean.setColour(new Color(value,
                                     colourBean.getColour().getGreen(),
-                                    colourBean.getColour().getBlue()),
-                                    this);
+                                    colourBean.getColour().getBlue()));
                         }
                     } catch (Exception ex) {
                         System.out.println("Invalid value");
@@ -43,8 +42,7 @@ public class ColourTextField extends JTextField implements PropertyChangeListene
                         if (value >= 0 && value <= 255) {
                             colourBean.setColour(new Color(colourBean.getColour().getRed(),
                                     value,
-                                    colourBean.getColour().getBlue()),
-                                    this);
+                                    colourBean.getColour().getBlue()));
                         }
                     } catch (Exception ex) {
                         System.out.println("Invalid value");
@@ -60,8 +58,7 @@ public class ColourTextField extends JTextField implements PropertyChangeListene
                         if (value >= 0 && value <= 255) {
                             colourBean.setColour(new Color(colourBean.getColour().getRed(),
                                     colourBean.getColour().getGreen(),
-                                    value),
-                                    this);
+                                    value));
                         }
                     } catch (Exception ex) {
                         System.out.println("Invalid value");
