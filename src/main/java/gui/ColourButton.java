@@ -15,7 +15,6 @@ public class ColourButton extends JButton implements PropertyChangeListener {
     public ColourButton(Boolean isDarkerButton, final ColourBean colourBean) {
         super(isDarkerButton ? "Darker" : "Brighter");
         this.isDarkerButton = isDarkerButton;
-        this.setPreferredSize(new Dimension(100, 30));
         colourBean.addPropertyChangeListener(this);
         if (this.isDarkerButton) {
             this.addActionListener(new AbstractAction() {

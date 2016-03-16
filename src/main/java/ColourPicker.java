@@ -8,8 +8,8 @@ import java.awt.event.ActionEvent;
 @SuppressWarnings("FieldCanBeLocal")
 public class ColourPicker extends JPanel {
 
-    private final int WINDOW_HEIGHT = 400;
-    private final int WINDOW_WIDTH = 400;
+    private final int WINDOW_HEIGHT = 250;
+    private final int WINDOW_WIDTH = 300;
 
     private final ColourBean currentColour;
     private JMenuBar menuBar;
@@ -18,6 +18,7 @@ public class ColourPicker extends JPanel {
         currentColour = new ColourBean();
         setBackground(Color.white);
         setPreferredSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT));
+        setLayout(new BorderLayout());
         initializeComponents();
         initializeMenuBar();
 
@@ -39,57 +40,54 @@ public class ColourPicker extends JPanel {
         fileMenu.add(exitItem);
 
         JMenu attributesMenu = new JMenu("Attributes");
-        attributesMenu.add(new ColourRadioButton("red", Color.RED, currentColour));
-        attributesMenu.add(new ColourRadioButton("blue", Color.BLUE, currentColour));
-        attributesMenu.add(new ColourRadioButton("green", Color.GREEN, currentColour));
-        attributesMenu.add(new ColourRadioButton("yellow", Color.YELLOW, currentColour));
-        attributesMenu.add(new ColourRadioButton("cyan", Color.CYAN, currentColour));
-        attributesMenu.add(new ColourRadioButton("orange", Color.ORANGE, currentColour));
-        attributesMenu.add(new ColourRadioButton("black", Color.BLACK, currentColour));
+        createRadioButtons(attributesMenu);
 
         menuBar.add(fileMenu);
         menuBar.add(attributesMenu);
     }
 
     private void initializeComponents() {
-        JPanel bottom = new JPanel();
-        ColourPanel colourPanel = new ColourPanel(currentColour);
-
-        this.add(createColourSelectionPanel(Color.RED));
-        this.add(createColourSelectionPanel(Color.GREEN));
-        this.add(createColourSelectionPanel(Color.BLUE));
+        JPanel colourSelectionPanels = new JPanel();
+        colourSelectionPanels.setLayout(new BoxLayout(colourSelectionPanels, BoxLayout.Y_AXIS));
+        colourSelectionPanels.add(createColourSelectionPanel(Color.RED));
+        colourSelectionPanels.add(createColourSelectionPanel(Color.GREEN));
+        colourSelectionPanels.add(createColourSelectionPanel(Color.BLUE));
+        this.add(colourSelectionPanels, BorderLayout.PAGE_START);
+        this.add(new ColourPanel(currentColour), BorderLayout.LINE_START);
 
         JPanel radioButtons = new JPanel();
         radioButtons.setLayout(new BoxLayout(radioButtons, BoxLayout.Y_AXIS));
-        radioButtons.add(new ColourRadioButton("red", Color.RED, currentColour));
-        radioButtons.add(new ColourRadioButton("blue", Color.BLUE, currentColour));
-        radioButtons.add(new ColourRadioButton("green", Color.GREEN, currentColour));
-        radioButtons.add(new ColourRadioButton("yellow", Color.YELLOW, currentColour));
-        radioButtons.add(new ColourRadioButton("cyan", Color.CYAN, currentColour));
-        radioButtons.add(new ColourRadioButton("orange", Color.ORANGE, currentColour));
-        radioButtons.add(new ColourRadioButton("black", Color.BLACK, currentColour));
+        createRadioButtons(radioButtons);
+        this.add(radioButtons, BorderLayout.CENTER);
 
         JPanel buttons = new JPanel();
         buttons.setLayout(new BoxLayout(buttons, BoxLayout.Y_AXIS));
         buttons.add(new ColourButton(true, currentColour));
         buttons.add(new ColourButton(false, currentColour));
+        this.add(buttons, BorderLayout.LINE_END);
+    }
 
-        bottom.add(colourPanel);
-        bottom.add(radioButtons);
-        bottom.add(buttons);
-
-        this.add(bottom);
-        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+    private void createRadioButtons(JComponent component) {
+        component.add(new ColourRadioButton("red", Color.RED, currentColour));
+        component.add(new ColourRadioButton("blue", Color.BLUE, currentColour));
+        component.add(new ColourRadioButton("green", Color.GREEN, currentColour));
+        component.add(new ColourRadioButton("yellow", Color.YELLOW, currentColour));
+        component.add(new ColourRadioButton("cyan", Color.CYAN, currentColour));
+        component.add(new ColourRadioButton("orange", Color.ORANGE, currentColour));
+        component.add(new ColourRadioButton("black", Color.BLACK, currentColour));
     }
 
     private JPanel createColourSelectionPanel(Color colour) {
         JPanel panel = new JPanel();
+        panel.setLayout(new GridLayout(1, 2, 0, 0));
+        JPanel innerPanel = new JPanel();
         ColourScrollBar scrollBar = new ColourScrollBar(colour, currentColour);
         ColourTextField textField = new ColourTextField(colour, currentColour);
         ColourLabel label = new ColourLabel(colour, currentColour);
+        innerPanel.add(textField);
+        innerPanel.add(label);
         panel.add(scrollBar);
-        panel.add(textField);
-        panel.add(label);
+        panel.add(innerPanel);
         return panel;
     }
 

@@ -13,7 +13,7 @@ public class ColourLabel extends JLabel implements PropertyChangeListener {
 
     public ColourLabel(final Color colour, final ColourBean colourBean) {
         this.colour = colour;
-        this.setPreferredSize(new Dimension(80, 20));
+        this.setPreferredSize(new Dimension(60, 20));
         colourBean.addPropertyChangeListener(this);
     }
 
