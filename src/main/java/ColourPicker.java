@@ -1,7 +1,4 @@
-import gui.ColourLabel;
-import gui.ColourPanel;
-import gui.ColourScrollBar;
-import gui.ColourTextField;
+import gui.*;
 import tools.ColourBean;
 
 import javax.swing.*;
@@ -37,7 +34,13 @@ public class ColourPicker extends JPanel {
         fileMenu.add(exitItem);
 
         JMenu attributesMenu = new JMenu("Attributes");
-//        attributesMenu.add(redRadioButton);
+        attributesMenu.add(new ColourRadioButton("red", Color.RED, currentColour));
+        attributesMenu.add(new ColourRadioButton("blue", Color.BLUE, currentColour));
+        attributesMenu.add(new ColourRadioButton("green", Color.GREEN, currentColour));
+        attributesMenu.add(new ColourRadioButton("yellow", Color.YELLOW, currentColour));
+        attributesMenu.add(new ColourRadioButton("cyan", Color.CYAN, currentColour));
+        attributesMenu.add(new ColourRadioButton("orange", Color.ORANGE, currentColour));
+        attributesMenu.add(new ColourRadioButton("black", Color.BLACK, currentColour));
 
         menuBar.add(fileMenu);
         menuBar.add(attributesMenu);
@@ -45,16 +48,21 @@ public class ColourPicker extends JPanel {
 
     public void initializeComponents() {
         JPanel bottom = new JPanel();
-        ColourPanel colourPanel = new ColourPanel();
-        currentColour.addPropertyChangeListener(colourPanel);
+        ColourPanel colourPanel = new ColourPanel(currentColour);
 
         this.add(createColourSelectionPanel(Color.RED));
         this.add(createColourSelectionPanel(Color.GREEN));
         this.add(createColourSelectionPanel(Color.BLUE));
 
         JPanel radioButtons = new JPanel();
-//        redRadioButton = createRadioButton("red", Color.RED);
-//        radioButtons.add(redRadioButton);
+        radioButtons.setLayout(new BoxLayout(radioButtons, BoxLayout.Y_AXIS));
+        radioButtons.add(new ColourRadioButton("red", Color.RED, currentColour));
+        radioButtons.add(new ColourRadioButton("blue", Color.BLUE, currentColour));
+        radioButtons.add(new ColourRadioButton("green", Color.GREEN, currentColour));
+        radioButtons.add(new ColourRadioButton("yellow", Color.YELLOW, currentColour));
+        radioButtons.add(new ColourRadioButton("cyan", Color.CYAN, currentColour));
+        radioButtons.add(new ColourRadioButton("orange", Color.ORANGE, currentColour));
+        radioButtons.add(new ColourRadioButton("black", Color.BLACK, currentColour));
 
         bottom.add(colourPanel);
         bottom.add(radioButtons);
@@ -71,22 +79,8 @@ public class ColourPicker extends JPanel {
         panel.add(scrollBar);
         panel.add(textField);
         panel.add(label);
-        currentColour.addPropertyChangeListener(scrollBar);
-        currentColour.addPropertyChangeListener(textField);
-        currentColour.addPropertyChangeListener(label);
         return panel;
     }
-
-//    public JRadioButton createRadioButton(String name, final Color colour) {
-//        final JRadioButton radioButton = new JRadioButton(name);
-//        radioButton.addActionListener(new AbstractAction() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                radioButton.firePropertyChange("colour", 0, colour.getRGB());
-//            }
-//        });
-//        return radioButton;
-//    }
 
     public static void main(String[] args) {
         try {
