@@ -9,10 +9,6 @@ public class ColourBean {
     private SwingPropertyChangeSupport swingPropertyChangeSupport = new SwingPropertyChangeSupport(this);
     private Color colour = Color.BLACK;
 
-    public ColourBean(PropertyChangeListener propertyChangeListener) {
-        addPropertyChangeListener(propertyChangeListener);
-    }
-
     public void addPropertyChangeListener(PropertyChangeListener propertyChangeListener) {
         this.swingPropertyChangeSupport.addPropertyChangeListener(propertyChangeListener);
     }
@@ -25,8 +21,9 @@ public class ColourBean {
         return colour;
     }
 
-    public void setColour(Color colour) {
-        this.swingPropertyChangeSupport.firePropertyChange("Colour", this.colour, colour);
+    public void setColour(Color colour, Object source) {
         this.colour = colour;
+        this.swingPropertyChangeSupport.firePropertyChange("colour", source, this.colour);
     }
+
 }
