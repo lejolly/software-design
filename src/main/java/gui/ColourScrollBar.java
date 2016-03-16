@@ -19,6 +19,7 @@ public class ColourScrollBar extends JScrollBar implements PropertyChangeListene
         this.colour = colour;
         this.setBackground(colour);
         this.setPreferredSize(new Dimension(200, 20));
+        colourBean.addPropertyChangeListener(this);
         if (this.colour.equals(Color.RED)) {
             this.addAdjustmentListener(new AdjustmentListener() {
                 @Override

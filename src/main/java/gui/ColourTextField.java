@@ -16,6 +16,7 @@ public class ColourTextField extends JTextField implements PropertyChangeListene
     public ColourTextField(final Color colour, final ColourBean colourBean) {
         this.colour = colour;
         this.setPreferredSize(new Dimension(80, 20));
+        colourBean.addPropertyChangeListener(this);
         if (this.colour.equals(Color.RED)) {
             this.addActionListener(new AbstractAction() {
                 @Override
