@@ -5,16 +5,14 @@
 
 package jdraw.figures;
 
-import java.awt.Cursor;
-import java.awt.Point;
-import java.awt.event.MouseEvent;
-
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-
 import jdraw.framework.DrawContext;
 import jdraw.framework.DrawTool;
 import jdraw.framework.DrawView;
+import jdraw.joslee.figures.MyRect;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.MouseEvent;
 
 /**
  * This tool defines a mode for drawing rectangles.
@@ -46,7 +44,7 @@ public class RectTool implements DrawTool {
 	 * mouse down - mouse drag - mouse up cycle) this variable refers
 	 * to the new rectangle that is inserted.
 	 */
-	private Rect newRect = null;
+	private MyRect newRect = null;
 
 	/**
 	 * Temporary variable.
@@ -97,7 +95,7 @@ public class RectTool implements DrawTool {
 			throw new IllegalStateException();
 		}
 		anchor = new Point(x, y);
-		newRect = new Rect(x, y, 0, 0);
+		newRect = new MyRect(x, y, 0, 0);
 		view.getModel().addFigure(newRect);
 	}
 

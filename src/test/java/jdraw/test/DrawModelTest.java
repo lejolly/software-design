@@ -1,7 +1,7 @@
 package jdraw.test;
 
 import jdraw.framework.*;
-import jdraw.std.StdDrawModel;
+import jdraw.joslee.MyDrawModel;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -33,7 +33,7 @@ public class DrawModelTest {
 	private DrawModelEvent.Type type;
 	
 	protected DrawModel createDrawModel() {
-		return new StdDrawModel();
+		return new MyDrawModel();
 	}
 
 	@Before

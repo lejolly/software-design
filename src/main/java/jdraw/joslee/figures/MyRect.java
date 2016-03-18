@@ -1,28 +1,28 @@
 /*
  * Copyright (c) 2000-2016 Fachhochschule Nordwestschweiz (FHNW)
- * All Rights Reserved. 
+ * All Rights Reserved.
  */
 
-package jdraw.figures;
+package jdraw.joslee.figures;
 
-import jdraw.framework.Figure;
-import jdraw.framework.FigureHandle;
-import jdraw.framework.FigureListener;
+import jdraw.framework.*;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Represents rectangles in JDraw.
  *
- * @author Christoph Denzler
+ * @author Christoph Denzler, Joshua Lee
  *
  */
-public class Rect implements Figure {
+public class MyRect implements Figure {
     /**
      * Use the java.awt.Rectangle in order to save/reuse code.
      */
     private java.awt.Rectangle rectangle;
+    private List<FigureListener> listeners;
 
     /**
      * Create a new rectangle of the given dimension.
@@ -31,8 +31,9 @@ public class Rect implements Figure {
      * @param w the rectangle's width
      * @param h the rectangle's height
      */
-    public Rect(int x, int y, int w, int h) {
+    public MyRect(int x, int y, int w, int h) {
         rectangle = new java.awt.Rectangle(x, y, w, h);
+        listeners = new ArrayList<>();
     }
 
     /**
@@ -51,13 +52,15 @@ public class Rect implements Figure {
     @Override
     public void setBounds(Point origin, Point corner) {
         rectangle.setFrameFromDiagonal(origin, corner);
-        // TODO notification of change
+        notifyListeners();
     }
 
     @Override
     public void move(int dx, int dy) {
-        rectangle.setLocation(rectangle.x + dx, rectangle.y + dy);
-        // TODO notification of change
+        if (dx != 0 || dy != 0) {
+            rectangle.setLocation(rectangle.x + dx, rectangle.y + dy);
+            notifyListeners();
+        }
     }
 
     @Override
@@ -81,17 +84,28 @@ public class Rect implements Figure {
 
     @Override
     public void addFigureListener(FigureListener listener) {
-        // TODO Auto-generated method stub
+        if (!listeners.contains(listener)) {
+            listeners.add(listener);
+        }
     }
 
     @Override
     public void removeFigureListener(FigureListener listener) {
-        // TODO Auto-generated method stub
+        if (listeners.contains(listener)) {
+            listeners.remove(listener);
+        }
     }
 
     @Override
     public Figure clone() {
         return null;
+    }
+
+    private void notifyListeners() {
+        FigureEvent event = new FigureEvent(this);
+        for (FigureListener listener : new ArrayList<>(listeners)) {
+            listener.figureChanged(event);
+        }
     }
 
 }

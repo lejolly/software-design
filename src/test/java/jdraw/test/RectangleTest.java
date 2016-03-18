@@ -1,23 +1,22 @@
 package jdraw.test;
 
-import static org.junit.Assert.assertTrue;
-
-import org.junit.Before;
-import org.junit.Test;
-
-import jdraw.figures.Rect;
 import jdraw.framework.Figure;
 import jdraw.framework.FigureEvent;
 import jdraw.framework.FigureListener;
+import jdraw.joslee.figures.MyRect;
+import org.junit.Before;
+import org.junit.Test;
+
+import static org.junit.Assert.assertTrue;
 
 public class RectangleTest {
 
-	private Rect f;
+	private MyRect f;
 	private int cnt;
 
 	@Before
 	public void setUp() {
-		f = new Rect(0, 0, 20, 10);
+		f = new MyRect(0, 0, 20, 10);
 		cnt = 0;
 	}
 

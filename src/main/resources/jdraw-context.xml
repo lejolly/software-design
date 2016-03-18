@@ -2,7 +2,7 @@
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
 
 <beans>
-	<bean id="drawModel" class="jdraw.std.StdDrawModel"/>
+	<bean id="drawModel" class="jdraw.joslee.MyDrawModel"/>
 
 	<bean id="drawView" class="jdraw.std.StdDrawView" singleton="false">
 		<constructor-arg><ref bean="drawModel"/></constructor-arg>
