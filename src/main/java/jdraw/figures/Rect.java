@@ -5,15 +5,11 @@
 
 package jdraw.figures;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.util.List;
+import jdraw.framework.*;
 
-import jdraw.framework.Figure;
-import jdraw.framework.FigureHandle;
-import jdraw.framework.FigureListener;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Represents rectangles in JDraw.
@@ -26,6 +22,7 @@ public class Rect implements Figure {
 	 * Use the java.awt.Rectangle in order to save/reuse code.
 	 */
 	private java.awt.Rectangle rectangle;
+	private List<FigureListener> listeners;
 	
 	/**
 	 * Create a new rectangle of the given dimension.
@@ -36,6 +33,7 @@ public class Rect implements Figure {
 	 */
 	public Rect(int x, int y, int w, int h) {
 		rectangle = new java.awt.Rectangle(x, y, w, h);
+        listeners = new ArrayList<>();
 	}
 
 	/**
@@ -53,14 +51,16 @@ public class Rect implements Figure {
 	
 	@Override
 	public void setBounds(Point origin, Point corner) {
-		rectangle.setFrameFromDiagonal(origin, corner);
-		// TODO notification of change
-	}
+        rectangle.setFrameFromDiagonal(origin, corner);
+        notifyListeners();
+    }
 
 	@Override
 	public void move(int dx, int dy) {
-		rectangle.setLocation(rectangle.x + dx, rectangle.y + dy);
-		// TODO notification of change
+        if (dx != 0 || dy != 0) {
+            rectangle.setLocation(rectangle.x + dx, rectangle.y + dy);
+            notifyListeners();
+        }
 	}
 
 	@Override
@@ -84,17 +84,28 @@ public class Rect implements Figure {
 
 	@Override
 	public void addFigureListener(FigureListener listener) {
-		// TODO Auto-generated method stub
+        if (!listeners.contains(listener)) {
+            listeners.add(listener);
+        }
 	}
 
 	@Override
 	public void removeFigureListener(FigureListener listener) {
-		// TODO Auto-generated method stub
+        if (listeners.contains(listener)) {
+            listeners.remove(listener);
+        }
 	}
 
 	@Override
 	public Figure clone() {
 		return null;
 	}
+
+    private void notifyListeners() {
+        FigureEvent event = new FigureEvent(this);
+        for (FigureListener listener : new ArrayList<>(listeners)) {
+            listener.figureChanged(event);
+        }
+    }
 
 }

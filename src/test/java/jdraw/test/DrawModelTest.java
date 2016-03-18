@@ -1,27 +1,17 @@
 package jdraw.test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import jdraw.framework.*;
+import jdraw.std.StdDrawModel;
+import org.junit.Before;
+import org.junit.Test;
 
-import java.awt.Graphics;
-import java.awt.Point;
+import java.awt.*;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.StreamSupport;
 
-import org.junit.Before;
-import org.junit.Test;
-
-import jdraw.framework.DrawModel;
-import jdraw.framework.DrawModelEvent;
-import jdraw.framework.DrawModelListener;
-import jdraw.framework.Figure;
-import jdraw.framework.FigureHandle;
-import jdraw.framework.FigureListener;
-import jdraw.std.StdDrawModel;
+import static org.junit.Assert.*;
 
 public class DrawModelTest {
 
@@ -132,7 +122,7 @@ public class DrawModelTest {
 		m.addModelChangeListener(l);
 		m.removeFigure(f);
 		assertTrue(
-				"no notificatoin expected, figure was not contained in model", cnt == 0);
+				"no notification expected, figure was not contained in model", cnt == 0);
 	}
 
 	@Test
