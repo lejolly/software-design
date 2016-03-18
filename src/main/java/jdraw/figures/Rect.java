@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * Represents rectangles in JDraw.
  * 
- * @author Christoph Denzler
+ * @author Christoph Denzler, Joshua Lee
  *
  */
 public class Rect implements Figure {
