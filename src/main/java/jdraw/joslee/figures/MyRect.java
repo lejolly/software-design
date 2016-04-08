@@ -5,10 +5,9 @@
 
 package jdraw.joslee.figures;
 
-import jdraw.framework.*;
+import jdraw.framework.FigureHandle;
 
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,12 +16,11 @@ import java.util.List;
  * @author Christoph Denzler, Joshua Lee
  *
  */
-public class MyRect implements Figure {
+public class MyRect extends MyFigure {
     /**
      * Use the java.awt.Rectangle in order to save/reuse code.
      */
     private java.awt.Rectangle rectangle;
-    private List<FigureListener> listeners;
 
     /**
      * Create a new rectangle of the given dimension.
@@ -33,7 +31,6 @@ public class MyRect implements Figure {
      */
     public MyRect(int x, int y, int w, int h) {
         rectangle = new java.awt.Rectangle(x, y, w, h);
-        listeners = new ArrayList<>();
     }
 
     /**
@@ -80,32 +77,6 @@ public class MyRect implements Figure {
      */
     public List<FigureHandle> getHandles() {
         return null;
-    }
-
-    @Override
-    public void addFigureListener(FigureListener listener) {
-        if (!listeners.contains(listener)) {
-            listeners.add(listener);
-        }
-    }
-
-    @Override
-    public void removeFigureListener(FigureListener listener) {
-        if (listeners.contains(listener)) {
-            listeners.remove(listener);
-        }
-    }
-
-    @Override
-    public Figure clone() {
-        return null;
-    }
-
-    private void notifyListeners() {
-        FigureEvent event = new FigureEvent(this);
-        for (FigureListener listener : new ArrayList<>(listeners)) {
-            listener.figureChanged(event);
-        }
     }
 
 }

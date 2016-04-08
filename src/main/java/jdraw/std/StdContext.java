@@ -4,25 +4,17 @@
  */
 package jdraw.std;
 
+import jdraw.framework.*;
+import jdraw.joslee.figures.MyLineTool;
+import jdraw.joslee.figures.MyRectTool;
+
+import javax.swing.*;
+import javax.swing.filechooser.FileFilter;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
-
-import javax.swing.JFileChooser;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
-import javax.swing.KeyStroke;
-import javax.swing.filechooser.FileFilter;
-
-import jdraw.figures.RectTool;
-import jdraw.framework.DrawCommandHandler;
-import jdraw.framework.DrawModel;
-import jdraw.framework.DrawTool;
-import jdraw.framework.DrawToolFactory;
-import jdraw.framework.DrawView;
-import jdraw.framework.Figure;
 
 /**
  * Standard implementation of interface DrawContext.
@@ -171,8 +163,10 @@ public class StdContext extends AbstractContext {
 	@Override
 	protected void doRegisterDrawTools() {
 		// TODO Add new figure tools here
-		DrawTool rectangleTool = new RectTool(this);
+		DrawTool rectangleTool = new MyRectTool(this);
+		DrawTool lineTool = new MyLineTool(this);
 		addTool(rectangleTool);
+        addTool(lineTool);
 	}
 
 	/**
