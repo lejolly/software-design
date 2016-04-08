@@ -7,7 +7,7 @@ import jdraw.framework.FigureListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class MyFigure implements Figure {
+abstract class MyFigure implements Figure {
 
     private List<FigureListener> listeners;
 

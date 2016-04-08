@@ -6,6 +6,7 @@ package jdraw.std;
 
 import jdraw.framework.*;
 import jdraw.joslee.figures.MyLineTool;
+import jdraw.joslee.figures.MyOvalTool;
 import jdraw.joslee.figures.MyRectTool;
 
 import javax.swing.*;
@@ -165,8 +166,10 @@ public class StdContext extends AbstractContext {
 		// TODO Add new figure tools here
 		DrawTool rectangleTool = new MyRectTool(this);
 		DrawTool lineTool = new MyLineTool(this);
+        DrawTool ovalTool = new MyOvalTool(this);
 		addTool(rectangleTool);
         addTool(lineTool);
+        addTool(ovalTool);
 	}
 
 	/**

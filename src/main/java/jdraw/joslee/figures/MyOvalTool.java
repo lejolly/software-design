@@ -10,31 +10,31 @@ import jdraw.framework.DrawContext;
 import javax.swing.*;
 
 /**
- * This tool defines a mode for drawing lines.
+ * This tool defines a mode for drawing ovals.
  *
  * @see jdraw.framework.Figure
  *
  * @author  Christoph Denzler, Joshua Lee
  */
-public class MyLineTool extends MyDrawTool {
+public class MyOvalTool extends MyDrawTool {
 
-    public MyLineTool(DrawContext context) {
+    public MyOvalTool(DrawContext context) {
         super(context);
     }
 
     @Override
     MyFigure getNewFigure(int x, int y) {
-        return new MyLine(x, y, x, y);
+        return new MyOval(x, y, 0, 0);
     }
 
     @Override
     public Icon getIcon() {
-        return new ImageIcon(getClass().getResource(IMAGES + "line.png"));
+        return new ImageIcon(getClass().getResource(IMAGES + "oval.png"));
     }
 
     @Override
     public String getName() {
-        return "Line";
+        return "Oval";
     }
 
 }

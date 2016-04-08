@@ -12,9 +12,9 @@ import java.awt.event.MouseEvent;
  *
  * @see jdraw.framework.Figure
  *
- * @author  Christoph Denzler
+ * @author  Christoph Denzler, Joshua Lee
  */
-public abstract class MyDrawTool implements DrawTool {
+abstract class MyDrawTool implements DrawTool {
 
     /**
      * the image resource path.
@@ -24,27 +24,27 @@ public abstract class MyDrawTool implements DrawTool {
     /**
      * The context we use for drawing.
      */
-    DrawContext context;
+    private DrawContext context;
 
     /**
      * The context's view. This variable can be used as a shortcut, i.e.
      * instead of calling context.getView().
      */
-    DrawView view;
+    private DrawView view;
 
     /**
      * Temporary variable. During line creation (during a
      * mouse down - mouse drag - mouse up cycle) this variable refers
      * to the new figure that is inserted.
      */
-    MyFigure newFigure = null;
+    private MyFigure newFigure = null;
 
     /**
      * Temporary variable.
      * During rectangle creation this variable refers to the point the
      * mouse was first pressed.
      */
-    Point anchor = null;
+    private Point anchor = null;
 
     /**
      * Create a new tool for the given context.
@@ -54,6 +54,11 @@ public abstract class MyDrawTool implements DrawTool {
         this.context = context;
         this.view = context.getView();
     }
+
+    /**
+    * Creates a new figure
+    * */
+    abstract MyFigure getNewFigure(int x, int y);
 
     /**
      * Activates the Figure Mode. There will be a
@@ -71,6 +76,25 @@ public abstract class MyDrawTool implements DrawTool {
      */
     public void deactivate() {
         this.context.showStatusText("");
+    }
+
+    /**
+     * Initializes a new Line object by setting an anchor
+     * point where the mouse was pressed. A new Line is then
+     * added to the model.
+     * @param x x-coordinate of mouse
+     * @param y y-coordinate of mouse
+     * @param e event containing additional information about which keys were pressed.
+     *
+     * @see jdraw.framework.DrawTool#mouseDown(int, int, MouseEvent)
+     */
+    public void mouseDown(int x, int y, MouseEvent e) {
+        if (newFigure != null) {
+            throw new IllegalStateException();
+        }
+        anchor = new Point(x, y);
+        newFigure = getNewFigure(x, y);
+        view.getModel().addFigure(newFigure);
     }
 
     /**
