@@ -17,6 +17,7 @@ import java.util.List;
  *
  */
 public class MyRect extends MyFigure {
+
     /**
      * Use the java.awt.Rectangle in order to save/reuse code.
      */

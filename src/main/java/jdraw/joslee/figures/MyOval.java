@@ -17,6 +17,7 @@ import java.util.List;
  *
  */
 public class MyOval extends MyFigure {
+
     /**
      * Use the java.awt.geom.Ellipse2D in order to save/reuse code.
      */

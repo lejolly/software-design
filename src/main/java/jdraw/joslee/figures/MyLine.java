@@ -17,6 +17,9 @@ import java.util.List;
  *
  */
 public class MyLine extends MyFigure {
+
+    private static final double CONTAINS_RANGE_PERCENTAGE = 0.1;
+
     /**
      * Use the java.awt.geom.Line2D in order to save/reuse code.
      */
@@ -56,9 +59,19 @@ public class MyLine extends MyFigure {
         }
     }
 
+    /**
+     * Used for dragging the line around, does so by comparing the gradients
+     * but also giving a bit of leeway so that the user does not need to click
+     * directly on the line itself. 
+     * @param x the X coordinate of the cursor
+     * @param y the Y coordinate of the cursor
+     */
     @Override
     public boolean contains(int x, int y) {
-        return line.contains(x, y);
+        double gradient = (line.y2 - line.y1) * (x - line.x1);
+        double newGradient = (y - line.y1) * (line.x2 - line.x1);
+        return (gradient * (1 - CONTAINS_RANGE_PERCENTAGE)) <= newGradient &&
+                newGradient <= (gradient * (1 + CONTAINS_RANGE_PERCENTAGE));
     }
 
     @Override
