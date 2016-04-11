@@ -103,7 +103,9 @@ public class MyDrawModel implements DrawModel, FigureListener {
 
     @Override
     public void figureChanged(FigureEvent e) {
-
+        if (figures.contains(e.getFigure())) {
+            notifyListeners(new DrawModelEvent(this, e.getFigure(), DrawModelEvent.Type.FIGURE_CHANGED));
+        }
     }
 
     private void notifyListeners(DrawModelEvent event) {
