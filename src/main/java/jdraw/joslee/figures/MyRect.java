@@ -8,6 +8,7 @@ package jdraw.joslee.figures;
 import jdraw.framework.FigureHandle;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,7 +22,7 @@ public class MyRect extends MyFigure {
     /**
      * Use the java.awt.Rectangle in order to save/reuse code.
      */
-    private java.awt.Rectangle rectangle;
+    private Rectangle rectangle;
 
     /**
      * Create a new rectangle of the given dimension.
@@ -40,17 +41,18 @@ public class MyRect extends MyFigure {
      */
     public void draw(Graphics g) {
         g.setColor(Color.WHITE);
-        g.fillRect(rectangle.x, rectangle.y,
-                rectangle.width, rectangle.height);
+        g.fillRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
         g.setColor(Color.BLACK);
-        g.drawRect(rectangle.x, rectangle.y,
-                rectangle.width, rectangle.height);
+        g.drawRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
     }
 
     @Override
     public void setBounds(Point origin, Point corner) {
+        Rectangle originalRectangle = new Rectangle(rectangle);
         rectangle.setFrameFromDiagonal(origin, corner);
-        notifyListeners();
+        if (!rectangle.equals(originalRectangle)) {
+            notifyListeners();
+        }
     }
 
     @Override

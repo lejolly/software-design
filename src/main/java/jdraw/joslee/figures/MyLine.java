@@ -8,6 +8,7 @@ package jdraw.joslee.figures;
 import jdraw.framework.FigureHandle;
 
 import java.awt.*;
+import java.awt.geom.Line2D;
 import java.util.List;
 
 /**
@@ -23,7 +24,7 @@ public class MyLine extends MyFigure {
     /**
      * Use the java.awt.geom.Line2D in order to save/reuse code.
      */
-    private java.awt.geom.Line2D.Double line;
+    private Line2D.Double line;
 
     /**
      * Create a new line of the given dimension.
@@ -47,8 +48,11 @@ public class MyLine extends MyFigure {
 
     @Override
     public void setBounds(Point origin, Point corner) {
+        Line2D.Double originalLine = new Line2D.Double(line.getP1(), line.getP2());
         line.setLine(origin.x, origin.y, corner.x, corner.y);
-        notifyListeners();
+        if (!line.equals(originalLine)) {
+            notifyListeners();
+        }
     }
 
     @Override

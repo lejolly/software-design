@@ -8,6 +8,7 @@ package jdraw.joslee.figures;
 import jdraw.framework.FigureHandle;
 
 import java.awt.*;
+import java.awt.geom.Ellipse2D;
 import java.util.List;
 
 /**
@@ -21,7 +22,7 @@ public class MyOval extends MyFigure {
     /**
      * Use the java.awt.geom.Ellipse2D in order to save/reuse code.
      */
-    private java.awt.geom.Ellipse2D.Double oval;
+    private Ellipse2D.Double oval;
 
     /**
      * Create a new oval of the given dimension.
@@ -49,8 +50,11 @@ public class MyOval extends MyFigure {
 
     @Override
     public void setBounds(Point origin, Point corner) {
+        Ellipse2D.Double originalOval = new Ellipse2D.Double(oval.x, oval.y, oval.width, oval.height);
         oval.setFrame(origin.x, origin.y, corner.x - origin.x, corner.y - origin.y);
-        notifyListeners();
+        if (!oval.equals(originalOval)) {
+            notifyListeners();
+        }
     }
 
     @Override
