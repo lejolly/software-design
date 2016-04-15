@@ -79,7 +79,13 @@ public class MyRect extends MyFigure {
      * @see jdraw.framework.Figure#getHandles()
      */
     public List<FigureHandle> getHandles() {
-        return null;
+        List<FigureHandle> handles = new ArrayList<>();
+        for (MyRectHandle.Type direction : MyRectHandle.Type.values()) {
+            MyRectHandle myRectHandle = new MyRectHandle(this, direction);
+            handles.add(myRectHandle);
+            addFigureListener(myRectHandle);
+        }
+        return handles;
     }
 
 }
