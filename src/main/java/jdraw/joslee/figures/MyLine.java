@@ -9,6 +9,7 @@ import jdraw.framework.FigureHandle;
 
 import java.awt.*;
 import java.awt.geom.Line2D;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -83,13 +84,22 @@ public class MyLine extends MyFigure {
         return line.getBounds();
     }
 
-    /**
-     * Returns a list of 8 handles for this Line.
-     * @return all handles that are attached to the targeted figure.
-     * @see jdraw.framework.Figure#getHandles()
-     */
     public List<FigureHandle> getHandles() {
-        return null;
+        List<FigureHandle> handles = new ArrayList<>();
+        for (MyLineHandle.Type direction : MyLineHandle.Type.values()) {
+            MyLineHandle myLineHandle = new MyLineHandle(this, direction);
+            handles.add(myLineHandle);
+            addFigureListener(myLineHandle);
+        }
+        return handles;
+    }
+
+    public Point getP1() {
+        return new Point((int) line.x1, (int) line.y1);
+    }
+
+    public Point getP2() {
+        return new Point((int) line.x2, (int) line.y2);
     }
 
 }

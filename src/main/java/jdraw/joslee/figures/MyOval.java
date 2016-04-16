@@ -9,10 +9,11 @@ import jdraw.framework.FigureHandle;
 
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Represents lines in JDraw.
+ * Represents ovals in JDraw.
  *
  * @author Christoph Denzler, Joshua Lee
  *
@@ -75,13 +76,14 @@ public class MyOval extends MyFigure {
         return oval.getBounds();
     }
 
-    /**
-     * Returns a list of 8 handles for this Oval.
-     * @return all handles that are attached to the targeted figure.
-     * @see jdraw.framework.Figure#getHandles()
-     */
     public List<FigureHandle> getHandles() {
-        return null;
+        List<FigureHandle> handles = new ArrayList<>();
+        for (MyOvalHandle.Type direction : MyOvalHandle.Type.values()) {
+            MyOvalHandle myOvalHandle = new MyOvalHandle(this, direction);
+            handles.add(myOvalHandle);
+            addFigureListener(myOvalHandle);
+        }
+        return handles;
     }
 
 }
