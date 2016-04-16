@@ -20,7 +20,7 @@ import java.util.List;
  */
 public class MyLine extends MyFigure {
 
-    private static final double CONTAINS_RANGE_PERCENTAGE = 0.1;
+    private static final int CONTAINS_RANGE = 5;
 
     /**
      * Use the java.awt.geom.Line2D in order to save/reuse code.
@@ -35,7 +35,7 @@ public class MyLine extends MyFigure {
      * @param y2 the Y coordinate of the end point
      */
     public MyLine(int x1, int y1, int x2, int y2) {
-        line = new java.awt.geom.Line2D.Double(x1, y1, x2, y2);
+        line = new Line2D.Double(x1, y1, x2, y2);
     }
 
     /**
@@ -64,19 +64,12 @@ public class MyLine extends MyFigure {
         }
     }
 
-    /**
-     * Used for dragging the line around, does so by comparing the gradients
-     * but also giving a bit of leeway so that the user does not need to click
-     * directly on the line itself. 
-     * @param x the X coordinate of the cursor
-     * @param y the Y coordinate of the cursor
-     */
     @Override
     public boolean contains(int x, int y) {
-        double gradient = (line.y2 - line.y1) * (x - line.x1);
-        double newGradient = (y - line.y1) * (line.x2 - line.x1);
-        return (gradient * (1 - CONTAINS_RANGE_PERCENTAGE)) <= newGradient &&
-                newGradient <= (gradient * (1 + CONTAINS_RANGE_PERCENTAGE));
+        Polygon area = new Polygon(new int[]{(int) line.x1, (int) line.x1, (int) line.x2, (int) line.x2},
+                new int[]{(int) line.y1 - CONTAINS_RANGE, (int) line.y1 + CONTAINS_RANGE,
+                        (int) line.y2 + CONTAINS_RANGE, (int) line.y2 - CONTAINS_RANGE}, 4);
+        return area.contains(x, y);
     }
 
     @Override

@@ -32,7 +32,7 @@ public class MyRect extends MyFigure {
      * @param h the rectangle's height
      */
     public MyRect(int x, int y, int w, int h) {
-        rectangle = new java.awt.Rectangle(x, y, w, h);
+        rectangle = new Rectangle(x, y, w, h);
     }
 
     /**

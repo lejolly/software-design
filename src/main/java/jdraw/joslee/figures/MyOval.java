@@ -35,7 +35,7 @@ public class MyOval extends MyFigure {
      * @param h the height of the framing rectangle
      */
     public MyOval(int x, int y, int w, int h) {
-        oval = new java.awt.geom.Ellipse2D.Double(x, y, w, h);
+        oval = new Ellipse2D.Double(x, y, w, h);
     }
 
     /**
