@@ -68,6 +68,14 @@ public abstract class MyHandle implements FigureHandle, FigureListener {
         v.getDrawContext().showStatusText("Selection mode");
     }
 
+    int getWidth() {
+        return owner.getBounds().width;
+    }
+
+    int getHeight() {
+        return owner.getBounds().height;
+    }
+
     abstract void setLocation();
 
     abstract void changeNameAndCursor();

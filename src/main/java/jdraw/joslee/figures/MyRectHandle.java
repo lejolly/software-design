@@ -133,12 +133,4 @@ public class MyRectHandle extends MyHandle {
         }
     }
 
-    private int getWidth() {
-        return owner.getBounds().width;
-    }
-
-    private int getHeight() {
-        return owner.getBounds().height;
-    }
-
 }

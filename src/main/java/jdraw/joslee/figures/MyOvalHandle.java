@@ -74,28 +74,36 @@ public class MyOvalHandle extends MyHandle {
     void resize(int x, int y) {
         switch(this.type) {
             case N:
-                owner.setBounds(new Point(startPoint.x, y), endPoint);
+                if (y < endPoint.y) {
+                    owner.setBounds(new Point(startPoint.x, y), endPoint);
+                } else {
+                    owner.setBounds(new Point(startPoint.x, endPoint.y), new Point(endPoint.x, y));
+                }
                 break;
             case E:
-                owner.setBounds(startPoint, new Point(x, endPoint.y));
+                if (x > startPoint.x) {
+                    owner.setBounds(startPoint, new Point(x, endPoint.y));
+                } else {
+                    owner.setBounds(new Point(x, startPoint.y), new Point(startPoint.x, endPoint.y));
+                }
                 break;
             case S:
-                owner.setBounds(startPoint, new Point(endPoint.x, y));
+                if (y > startPoint.y) {
+                    owner.setBounds(startPoint, new Point(endPoint.x, y));
+                } else {
+                    owner.setBounds(new Point(startPoint.x, y), new Point(endPoint.x, startPoint.y));
+                }
                 break;
             case W:
-                owner.setBounds(new Point(x, startPoint.y), endPoint);
+                if (x < endPoint.x) {
+                    owner.setBounds(new Point(x, startPoint.y), endPoint);
+                } else {
+                    owner.setBounds(new Point(endPoint.x, startPoint.y), new Point(x, endPoint.y));
+                }
                 break;
             case CENTER:
                 break;
         }
-    }
-
-    private int getWidth() {
-        return owner.getBounds().width;
-    }
-
-    private int getHeight() {
-        return owner.getBounds().height;
     }
 
 }
