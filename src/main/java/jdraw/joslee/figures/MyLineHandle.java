@@ -51,10 +51,18 @@ public class MyLineHandle extends MyHandle {
     void resize(int x, int y) {
         switch(this.type) {
             case FIRST:
-                owner.setBounds(new Point(x, y), endPoint);
+                if (x > endPoint.x || y > endPoint.y) {
+                    owner.setBounds(endPoint, new Point(x, y));
+                } else {
+                    owner.setBounds(new Point(x, y), endPoint);
+                }
                 break;
             case SECOND:
-                owner.setBounds(startPoint, new Point(x, y));
+                if (x < startPoint.x || y < startPoint.y) {
+                    owner.setBounds(new Point(x, y), startPoint);
+                } else {
+                    owner.setBounds(startPoint, new Point(x, y));
+                }
                 break;
         }
     }
