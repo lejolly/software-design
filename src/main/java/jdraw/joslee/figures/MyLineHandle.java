@@ -67,4 +67,8 @@ public class MyLineHandle extends MyHandle {
         }
     }
 
+    public Type getType() {
+        return type;
+    }
+
 }

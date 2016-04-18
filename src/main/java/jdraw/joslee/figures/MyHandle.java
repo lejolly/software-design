@@ -26,9 +26,13 @@ public abstract class MyHandle implements FigureHandle, FigureListener {
         return owner;
     }
 
+    public Point getOwnerLocation() {
+        return owner.getBounds().getLocation();
+    }
+
     @Override
     public Point getLocation() {
-        return owner.getBounds().getLocation();
+        return new Point(handleBox.getLocation().x + (HANDLE_SIZE / 2), handleBox.getLocation().y + (HANDLE_SIZE / 2));
     }
 
     @Override

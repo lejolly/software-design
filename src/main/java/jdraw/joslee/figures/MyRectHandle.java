@@ -26,39 +26,39 @@ public class MyRectHandle extends MyHandle {
     void setLocation() {
         switch(this.type) {
             case NW:
-                handleBox.setLocation(getLocation().x - (HANDLE_SIZE / 2), getLocation().y - (HANDLE_SIZE / 2));
+                handleBox.setLocation(getOwnerLocation().x - (HANDLE_SIZE / 2), getOwnerLocation().y - (HANDLE_SIZE / 2));
                 break;
             case N:
-                handleBox.setLocation(getLocation().x + (getWidth() / 2) - (HANDLE_SIZE / 2),
-                        getLocation().y - (HANDLE_SIZE / 2));
+                handleBox.setLocation(getOwnerLocation().x + (getWidth() / 2) - (HANDLE_SIZE / 2),
+                        getOwnerLocation().y - (HANDLE_SIZE / 2));
                 break;
             case NE:
-                handleBox.setLocation(getLocation().x + getWidth() - (HANDLE_SIZE / 2),
-                        getLocation().y - (HANDLE_SIZE / 2));
+                handleBox.setLocation(getOwnerLocation().x + getWidth() - (HANDLE_SIZE / 2),
+                        getOwnerLocation().y - (HANDLE_SIZE / 2));
                 break;
             case E:
-                handleBox.setLocation(getLocation().x + getWidth() - (HANDLE_SIZE / 2),
-                        getLocation().y + (getHeight() / 2) - (HANDLE_SIZE / 2));
+                handleBox.setLocation(getOwnerLocation().x + getWidth() - (HANDLE_SIZE / 2),
+                        getOwnerLocation().y + (getHeight() / 2) - (HANDLE_SIZE / 2));
                 break;
             case SE:
-                handleBox.setLocation(getLocation().x + getWidth() - (HANDLE_SIZE / 2),
-                        getLocation().y + getHeight() - (HANDLE_SIZE / 2));
+                handleBox.setLocation(getOwnerLocation().x + getWidth() - (HANDLE_SIZE / 2),
+                        getOwnerLocation().y + getHeight() - (HANDLE_SIZE / 2));
                 break;
             case S:
-                handleBox.setLocation(getLocation().x + (getWidth() / 2) - (HANDLE_SIZE / 2),
-                        getLocation().y + getHeight() - (HANDLE_SIZE / 2));
+                handleBox.setLocation(getOwnerLocation().x + (getWidth() / 2) - (HANDLE_SIZE / 2),
+                        getOwnerLocation().y + getHeight() - (HANDLE_SIZE / 2));
                 break;
             case SW:
-                handleBox.setLocation(getLocation().x - (HANDLE_SIZE / 2),
-                        getLocation().y + getHeight() - (HANDLE_SIZE / 2));
+                handleBox.setLocation(getOwnerLocation().x - (HANDLE_SIZE / 2),
+                        getOwnerLocation().y + getHeight() - (HANDLE_SIZE / 2));
                 break;
             case W:
-                handleBox.setLocation(getLocation().x - (HANDLE_SIZE / 2),
-                        getLocation().y + (getHeight() / 2) - (HANDLE_SIZE / 2));
+                handleBox.setLocation(getOwnerLocation().x - (HANDLE_SIZE / 2),
+                        getOwnerLocation().y + (getHeight() / 2) - (HANDLE_SIZE / 2));
                 break;
             case CENTER:
-                handleBox.setLocation(getLocation().x + (getWidth() / 2) - (HANDLE_SIZE / 2),
-                        getLocation().y + (getHeight() / 2) - (HANDLE_SIZE / 2));
+                handleBox.setLocation(getOwnerLocation().x + (getWidth() / 2) - (HANDLE_SIZE / 2),
+                        getOwnerLocation().y + (getHeight() / 2) - (HANDLE_SIZE / 2));
                 break;
         }
     }
@@ -131,6 +131,10 @@ public class MyRectHandle extends MyHandle {
             case CENTER:
                 break;
         }
+    }
+
+    public Type getType() {
+        return type;
     }
 
 }
