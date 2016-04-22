@@ -66,10 +66,7 @@ public class MyLine extends MyFigure {
 
     @Override
     public boolean contains(int x, int y) {
-        Polygon area = new Polygon(new int[]{(int) line.x1, (int) line.x1, (int) line.x2, (int) line.x2},
-                new int[]{(int) line.y1 - CONTAINS_RANGE, (int) line.y1 + CONTAINS_RANGE,
-                        (int) line.y2 + CONTAINS_RANGE, (int) line.y2 - CONTAINS_RANGE}, 4);
-        return area.contains(x, y);
+        return line.ptSegDist(x, y) <= CONTAINS_RANGE;
     }
 
     @Override
