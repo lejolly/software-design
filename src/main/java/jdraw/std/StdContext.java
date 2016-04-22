@@ -5,14 +5,15 @@
 package jdraw.std;
 
 import jdraw.framework.*;
+import jdraw.joslee.pointConstrainers.My5PointConstrainer;
+import jdraw.joslee.pointConstrainers.MyPointConstrainerStub;
 import jdraw.joslee.figures.MyLineTool;
 import jdraw.joslee.figures.MyOvalTool;
 import jdraw.joslee.figures.MyRectTool;
+import jdraw.joslee.pointConstrainers.MySnapPointConstrainer;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
@@ -74,7 +75,7 @@ public class StdContext extends AbstractContext {
 		);
 		editMenu.addSeparator();
 
-		JMenuItem sa = new JMenuItem("SelectAll");
+		JMenuItem sa = new JMenuItem("Select All");
 		sa.setAccelerator(KeyStroke.getKeyStroke("control A"));
 		editMenu.add(sa);
 		sa.addActionListener( e -> {
@@ -93,11 +94,7 @@ public class StdContext extends AbstractContext {
 		editMenu.addSeparator();
 		JMenuItem clear = new JMenuItem("Clear");
 		editMenu.add(clear);
-		clear.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				getModel().removeAllFigures();
-			}
-		});
+		clear.addActionListener(e -> getModel().removeAllFigures());
 		
 		editMenu.addSeparator();
 		JMenuItem group = new JMenuItem("Group");
@@ -112,25 +109,23 @@ public class StdContext extends AbstractContext {
 
 		JMenu orderMenu = new JMenu("Order...");
 		JMenuItem frontItem = new JMenuItem("Bring To Front");
-		frontItem.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				bringToFront(getView().getModel(), getView().getSelection());
-			}
-		});
+		frontItem.addActionListener(e -> bringToFront(getView().getModel(), getView().getSelection()));
 		orderMenu.add(frontItem);
 		JMenuItem backItem = new JMenuItem("Send To Back");
-		backItem.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				sendToBack(getView().getModel(), getView().getSelection());
-			}
-		});
+		backItem.addActionListener(e -> sendToBack(getView().getModel(), getView().getSelection()));
 		orderMenu.add(backItem);
 		editMenu.add(orderMenu);
 
 		JMenu grid = new JMenu("Grid...");
-		grid.add("Grid 1");
-		grid.add("Grid 2");
-		grid.add("Grid 3");
+        JMenuItem noGrid = new JMenuItem("No Grid");
+        noGrid.addActionListener(e -> getView().setConstrainer(new MyPointConstrainerStub()));
+		JMenuItem fivePointGrid = new JMenuItem("5 Point Grid");
+        fivePointGrid.addActionListener(e -> getView().setConstrainer(new My5PointConstrainer()));
+        JMenuItem snapPointGrid = new JMenuItem("Snap Point Grid");
+        snapPointGrid.addActionListener(e -> getView().setConstrainer(new MySnapPointConstrainer(getView())));
+        grid.add(noGrid);
+        grid.add(fivePointGrid);
+        grid.add(snapPointGrid);
 		editMenu.add(grid);
 		
 		return editMenu;
@@ -181,7 +176,7 @@ public class StdContext extends AbstractContext {
 	public void bringToFront(DrawModel model, List<Figure> selection) {
 		// the figures in the selection are ordered according to the order in
 		// the model
-		List<Figure> orderedSelection = new LinkedList<Figure>();
+		List<Figure> orderedSelection = new LinkedList<>();
 		int pos = 0;
 		for (Figure f : model.getFigures()) {
 			pos++;
@@ -203,7 +198,7 @@ public class StdContext extends AbstractContext {
 	public void sendToBack(DrawModel model, List<Figure> selection) {
 		// the figures in the selection are ordered according to the order in
 		// the model
-		List<Figure> orderedSelection = new LinkedList<Figure>();
+		List<Figure> orderedSelection = new LinkedList<>();
 		for (Figure f : model.getFigures()) {
 			if (selection.contains(f)) {
 				orderedSelection.add(f);

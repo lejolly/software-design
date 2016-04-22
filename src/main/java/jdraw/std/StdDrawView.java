@@ -5,31 +5,15 @@
 
 package jdraw.std;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
+import jdraw.framework.*;
+import jdraw.joslee.pointConstrainers.MySnapPointConstrainer;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-
-import javax.swing.JComponent;
-
-import jdraw.framework.DrawContext;
-import jdraw.framework.DrawModel;
-import jdraw.framework.DrawModelEvent;
-import jdraw.framework.DrawModelListener;
-import jdraw.framework.DrawView;
-import jdraw.framework.Figure;
-import jdraw.framework.FigureHandle;
-import jdraw.framework.PointConstrainer;
 
 /**
  * Standard implementation of interface DrawView.
@@ -108,6 +92,8 @@ public final class StdDrawView extends JComponent implements DrawView {
 		addMouseMotionListener(ieh);
 
 		addKeyListener(ieh);
+
+		setConstrainer(new MySnapPointConstrainer(this));
 	}
 
 	@Override
@@ -149,7 +135,7 @@ public final class StdDrawView extends JComponent implements DrawView {
 	 * underlying constrainer. The mode parameter indicates whether the method was called from
 	 * within mousePressed, mouseDragged or mouseReleased. Depending on the mode, this method
 	 * also calls the mouseDown and mouseUp methods on the constrainer.
-	 * 
+	 *
 	 * @param p
 	 *         the point to constrain
 	 * @param mode
