@@ -99,13 +99,70 @@ public class MySnapPointConstrainer implements PointConstrainer {
                 handle.getLocation().y <= (figure.getBounds().y + figure.getBounds().height);
     }
 
+    @SuppressWarnings("Duplicates")
     @Override
     public int getStepY(boolean down) {
         if (drawView.getSelection().size() == 1) {
-
-        } else {
+            Figure sourceFigure = drawView.getSelection().get(0);
+            ArrayList<FigureHandle> handles = getHandles(sourceFigure);
+            if (!handles.isEmpty()) {
+                // take out handles which are not within x boundaries
+                // and take out handles that are far from y boundaries
+                java.util.List<FigureHandle> closeHandles = handles.stream()
+                        .filter(handle -> isWithinXBoundaries(handle, sourceFigure))
+                        .filter(handle -> isCloseToYBoundaries(handle, sourceFigure))
+                        .collect(Collectors.toList());
+                if (!closeHandles.isEmpty()) {
+                    int y1 = sourceFigure.getBounds().y;
+                    int y2 = sourceFigure.getBounds().y + sourceFigure.getBounds().height;
+                    java.util.List<Pair<Integer, FigureHandle>> topHandles;
+                    java.util.List<Pair<Integer, FigureHandle>> bottomHandles;
+                    if (!down) {
+                        topHandles = closeHandles.stream()
+                                .filter(handle -> y1 - handle.getLocation().y <= SNAP_RANGE
+                                        && y1 - handle.getLocation().y > 0)
+                                .map(handle -> new Pair<>(y1 - handle.getLocation().y, handle))
+                                .collect(Collectors.toList());
+                        bottomHandles = closeHandles.stream()
+                                .filter(handle -> y2 - handle.getLocation().y <= SNAP_RANGE
+                                        && y2 - handle.getLocation().y > 0)
+                                .map(handle -> new Pair<>(y2 - handle.getLocation().y, handle))
+                                .collect(Collectors.toList());
+                    } else {
+                        topHandles = closeHandles.stream()
+                                .filter(handle -> handle.getLocation().y - y1 <= SNAP_RANGE
+                                        && handle.getLocation().y - y1 > 0)
+                                .map(handle -> new Pair<>(handle.getLocation().y - y1, handle))
+                                .collect(Collectors.toList());
+                        bottomHandles = closeHandles.stream()
+                                .filter(handle -> handle.getLocation().y - y2 <= SNAP_RANGE
+                                        && handle.getLocation().y - y2 > 0)
+                                .map(handle -> new Pair<>(handle.getLocation().y - y2, handle))
+                                .collect(Collectors.toList());
+                    }
+                    ArrayList<Pair<Integer, FigureHandle>> potentialHandles = new ArrayList<>();
+                    potentialHandles.addAll(topHandles);
+                    potentialHandles.addAll(bottomHandles);
+                    if (!potentialHandles.isEmpty()) {
+                        Collections.sort(potentialHandles, (o1, o2) -> Integer.compare(o1.getKey(), o2.getKey()));
+                        return potentialHandles.get(0).getKey();
+                    }
+                }
+            }
         }
         return 1;
+    }
+
+    private boolean isCloseToYBoundaries(FigureHandle handle, Figure figure) {
+        return (Math.abs(handle.getLocation().y - figure.getBounds().y) <= SNAP_RANGE
+                && Math.abs(handle.getLocation().y - figure.getBounds().y) > 0)||
+                (Math.abs(handle.getLocation().y - figure.getBounds().y - figure.getBounds().height) <= SNAP_RANGE
+                        && Math.abs(handle.getLocation().y - figure.getBounds().y - figure.getBounds().height) > 0);
+    }
+
+    private boolean isWithinXBoundaries(FigureHandle handle, Figure figure) {
+        return handle.getLocation().x >= figure.getBounds().x &&
+                handle.getLocation().x <= (figure.getBounds().x + figure.getBounds().width);
     }
 
     @Override
