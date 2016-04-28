@@ -78,6 +78,7 @@ public class MyRect extends MyFigure {
      * @return all handles that are attached to the targeted figure.
      * @see jdraw.framework.Figure#getHandles()
      */
+    @Override
     public List<FigureHandle> getHandles() {
         List<FigureHandle> handles = new ArrayList<>();
         for (MyRectHandle.Type direction : MyRectHandle.Type.values()) {

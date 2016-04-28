@@ -74,6 +74,7 @@ public class MyLine extends MyFigure {
         return line.getBounds();
     }
 
+    @Override
     public List<FigureHandle> getHandles() {
         List<FigureHandle> handles = new ArrayList<>();
         for (MyLineHandle.Type direction : MyLineHandle.Type.values()) {

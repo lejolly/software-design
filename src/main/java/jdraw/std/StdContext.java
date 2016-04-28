@@ -5,14 +5,17 @@
 package jdraw.std;
 
 import jdraw.framework.*;
-import jdraw.joslee.pointConstrainers.My5PointConstrainer;
-import jdraw.joslee.pointConstrainers.MyPointConstrainerStub;
+import jdraw.joslee.figures.MyFigureGroup;
 import jdraw.joslee.figures.MyLineTool;
 import jdraw.joslee.figures.MyOvalTool;
 import jdraw.joslee.figures.MyRectTool;
+import jdraw.joslee.pointConstrainers.My5PointConstrainer;
+import jdraw.joslee.pointConstrainers.MyPointConstrainerStub;
 import jdraw.joslee.pointConstrainers.MySnapPointConstrainer;
 
 import javax.swing.*;
+import javax.swing.event.MenuEvent;
+import javax.swing.event.MenuListener;
 import javax.swing.filechooser.FileFilter;
 import java.io.File;
 import java.util.LinkedList;
@@ -31,15 +34,15 @@ public class StdContext extends AbstractContext {
 	 * Constructs a standard context with a default set of drawing tools.
 	 * @param view the view that is displaying the actual drawing.
 	 */
-  public StdContext(DrawView view) {
-		super(view, null);
-	}
-	
-  /**
-   * Constructs a standard context. The drawing tools available can be parameterized using <code>toolFactories</code>.
-   * @param view the view that is displaying the actual drawing.
-   * @param toolFactories a list of DrawToolFactories that are available to the user
-   */
+    public StdContext(DrawView view) {
+        super(view, null);
+    }
+
+    /**
+    * Constructs a standard context. The drawing tools available can be parameterized using <code>toolFactories</code>.
+    * @param view the view that is displaying the actual drawing.
+    * @param toolFactories a list of DrawToolFactories that are available to the user
+    */
 	public StdContext(DrawView view, List<DrawToolFactory> toolFactories) {
 		super(view, toolFactories);
 	}
@@ -95,15 +98,60 @@ public class StdContext extends AbstractContext {
 		JMenuItem clear = new JMenuItem("Clear");
 		editMenu.add(clear);
 		clear.addActionListener(e -> getModel().removeAllFigures());
-		
-		editMenu.addSeparator();
-		JMenuItem group = new JMenuItem("Group");
-		group.setEnabled(false);
-		editMenu.add(group);
 
-		JMenuItem ungroup = new JMenuItem("Ungroup");
-		ungroup.setEnabled(false);
-		editMenu.add(ungroup);
+		editMenu.addSeparator();
+        JMenuItem group = new JMenuItem("Group");
+        editMenu.add(group);
+        group.addActionListener(e -> new MyFigureGroup(getView()));
+
+        JMenuItem ungroup = new JMenuItem("Ungroup");
+        editMenu.add(ungroup);
+        ungroup.addActionListener(e -> getView().getSelection().stream()
+                .filter(figure -> figure instanceof FigureGroup).forEach(figure -> {
+                    for (Figure subFigure : ((FigureGroup) figure).getFigureParts()) {
+                        getModel().addFigure(subFigure);
+                        getView().addToSelection(subFigure);
+                    }
+                    getModel().removeFigure(figure);
+                    getView().removeFromSelection(figure);
+                }));
+
+        // menu listener for group/ungroup
+        editMenu.addMenuListener(new MenuListener() {
+            @Override
+            public void menuSelected(MenuEvent e) {
+                // group
+                if (getView().getSelection().size() > 1) {
+                    group.setEnabled(true);
+                } else {
+                    group.setEnabled(false);
+                }
+
+                // ungroup
+                if (getView().getSelection().size() > 0) {
+                    boolean enabled = false;
+                    for (Figure figure : getView().getSelection()) {
+                        if (figure instanceof FigureGroup) {
+                            enabled = true;
+                            break;
+                        }
+                    }
+                    ungroup.setEnabled(enabled);
+                } else {
+                    ungroup.setEnabled(false);
+                }
+            }
+
+            @Override
+            public void menuDeselected(MenuEvent e) {
+
+            }
+
+            @Override
+            public void menuCanceled(MenuEvent e) {
+
+            }
+        });
 
 		editMenu.addSeparator();
 
@@ -116,6 +164,7 @@ public class StdContext extends AbstractContext {
 		orderMenu.add(backItem);
 		editMenu.add(orderMenu);
 
+		// TODO ActionListener listening to JRadioButtonMenuItem → view.setConstrainer(your_constrainer);
 		JMenu grid = new JMenu("Grid...");
         JMenuItem noGrid = new JMenuItem("No Grid");
         noGrid.addActionListener(e -> getView().setConstrainer(new MyPointConstrainerStub()));
@@ -127,7 +176,7 @@ public class StdContext extends AbstractContext {
         grid.add(fivePointGrid);
         grid.add(snapPointGrid);
 		editMenu.add(grid);
-		
+
 		return editMenu;
 	}
 
@@ -152,7 +201,7 @@ public class StdContext extends AbstractContext {
 		JMenuItem exit = new JMenuItem("Exit");
 		fileMenu.add(exit);
 		exit.addActionListener(e -> System.exit(0));
-		
+
 		return fileMenu;
 	}
 

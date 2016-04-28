@@ -76,6 +76,7 @@ public class MyOval extends MyFigure {
         return oval.getBounds();
     }
 
+    @Override
     public List<FigureHandle> getHandles() {
         List<FigureHandle> handles = new ArrayList<>();
         for (MyOvalHandle.Type direction : MyOvalHandle.Type.values()) {
