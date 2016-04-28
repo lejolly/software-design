@@ -185,6 +185,7 @@ public class MySnapPointConstrainer implements PointConstrainer {
 
     }
 
+    // TODO fix snap to handle when using mouse, currently it snaps to the mouse cursor and not the handle
     @SuppressWarnings("unchecked")
     private Point getClosestPoint(Point mouseLocation, Figure sourceFigure) {
         ArrayList<FigureHandle> handles = getHandles(sourceFigure);
@@ -192,8 +193,7 @@ public class MySnapPointConstrainer implements PointConstrainer {
                 .filter(handle -> getDistance(handle.getLocation(), mouseLocation) > 0)
                 .collect(Collectors.toList());
         Collections.sort(closeHandles, (o1, o2) ->
-                getDistance(o1.getLocation(), mouseLocation)
-                        .compareTo(getDistance(o2.getLocation(), mouseLocation)));
+                getDistance(o1.getLocation(), mouseLocation).compareTo(getDistance(o2.getLocation(), mouseLocation)));
         if (closeHandles.isEmpty() || getDistance(closeHandles.get(0).getLocation(), mouseLocation) > SNAP_RANGE) {
             return mouseLocation;
         } else {
