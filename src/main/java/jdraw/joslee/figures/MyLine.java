@@ -5,6 +5,7 @@
 
 package jdraw.joslee.figures;
 
+import jdraw.framework.Figure;
 import jdraw.framework.FigureHandle;
 
 import java.awt.*;
@@ -36,6 +37,12 @@ public class MyLine extends MyFigure {
      */
     public MyLine(int x1, int y1, int x2, int y2) {
         line = new Line2D.Double(x1, y1, x2, y2);
+    }
+
+    private MyLine(MyLine myLine) {
+        Point p1 = myLine.getP1();
+        Point p2 = myLine.getP2();
+        line = new Line2D.Double(p1.x, p1.y, p2.x, p2.y);
     }
 
     /**
@@ -83,6 +90,11 @@ public class MyLine extends MyFigure {
             addFigureListener(myLineHandle);
         }
         return handles;
+    }
+
+    @Override
+    public Figure clone() {
+        return new MyLine(this);
     }
 
     public Point getP1() {

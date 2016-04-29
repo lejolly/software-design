@@ -188,6 +188,7 @@ public final class StdDrawView extends JComponent implements DrawView {
 	public void clearSelection() {
 		selection.clear();
 		handles.clear();
+        context.toggleMenuOptions();
 	}
 
 	@Override
@@ -199,6 +200,7 @@ public final class StdDrawView extends JComponent implements DrawView {
 			if (hList != null) {
 				handles.addAll(hList);
 			}
+            context.toggleMenuOptions();
 		}
 	}
 
@@ -212,6 +214,7 @@ public final class StdDrawView extends JComponent implements DrawView {
 					it.remove();
 				}
 			}
+            context.toggleMenuOptions();
 		}
 	}
 

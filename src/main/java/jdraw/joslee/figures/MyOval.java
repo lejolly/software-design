@@ -5,6 +5,7 @@
 
 package jdraw.joslee.figures;
 
+import jdraw.framework.Figure;
 import jdraw.framework.FigureHandle;
 
 import java.awt.*;
@@ -36,6 +37,11 @@ public class MyOval extends MyFigure {
      */
     public MyOval(int x, int y, int w, int h) {
         oval = new Ellipse2D.Double(x, y, w, h);
+    }
+
+    private MyOval(MyOval myOval) {
+        Rectangle bounds = myOval.getBounds();
+        oval = new Ellipse2D.Double(bounds.x, bounds.y, bounds.width, bounds.height);
     }
 
     /**
@@ -85,6 +91,11 @@ public class MyOval extends MyFigure {
             addFigureListener(myOvalHandle);
         }
         return handles;
+    }
+
+    @Override
+    public Figure clone() {
+        return new MyOval(this);
     }
 
 }

@@ -92,4 +92,9 @@ public interface DrawContext {
 	 */
 	void showView();
 
+    /**
+     * Toggles menu options so that they work even if the menu isn't called/opened.
+     */
+    void toggleMenuOptions();
+
 }

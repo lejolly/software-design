@@ -5,6 +5,7 @@
 
 package jdraw.joslee.figures;
 
+import jdraw.framework.Figure;
 import jdraw.framework.FigureHandle;
 
 import java.awt.*;
@@ -33,6 +34,11 @@ public class MyRect extends MyFigure {
      */
     public MyRect(int x, int y, int w, int h) {
         rectangle = new Rectangle(x, y, w, h);
+    }
+
+    private MyRect(MyRect myRect) {
+        Rectangle bounds = myRect.getBounds();
+        rectangle = new Rectangle(bounds.x, bounds.y, bounds.width, bounds.height);
     }
 
     /**
@@ -87,6 +93,11 @@ public class MyRect extends MyFigure {
             addFigureListener(myRectHandle);
         }
         return handles;
+    }
+
+    @Override
+    public Figure clone() {
+        return new MyRect(this);
     }
 
 }

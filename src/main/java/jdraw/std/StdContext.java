@@ -4,6 +4,7 @@
  */
 package jdraw.std;
 
+import javafx.util.Pair;
 import jdraw.framework.*;
 import jdraw.joslee.figures.MyFigureGroup;
 import jdraw.joslee.figures.MyLineTool;
@@ -18,8 +19,10 @@ import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 import javax.swing.filechooser.FileFilter;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Standard implementation of interface DrawContext.
@@ -30,12 +33,21 @@ import java.util.List;
  */
 public class StdContext extends AbstractContext {
 
+    // true for cut, false for copy
+    private List<Pair<Boolean, Figure>> clipboard;
+
+    // variables for toggleMenuOptions
+    private JMenuItem cut;
+    private JMenuItem copy;
+    private JMenuItem paste;
+
 	/**
 	 * Constructs a standard context with a default set of drawing tools.
 	 * @param view the view that is displaying the actual drawing.
 	 */
     public StdContext(DrawView view) {
         super(view, null);
+        clipboard = new ArrayList<>();
     }
 
     /**
@@ -45,6 +57,7 @@ public class StdContext extends AbstractContext {
     */
 	public StdContext(DrawView view, List<DrawToolFactory> toolFactories) {
 		super(view, toolFactories);
+        clipboard = new ArrayList<>();
 	}
 
 	/**
@@ -90,9 +103,54 @@ public class StdContext extends AbstractContext {
 		);
 
 		editMenu.addSeparator();
-		editMenu.add("Cut").setEnabled(false);
-		editMenu.add("Copy").setEnabled(false);
-		editMenu.add("Paste").setEnabled(false);
+		cut = new JMenuItem("Cut");
+        cut.setAccelerator(KeyStroke.getKeyStroke("control X"));
+        cut.addActionListener(e -> {
+            if (getView().getSelection().size() > 0) {
+                if (!clipboard.isEmpty()) {
+                    clipboard.clear();
+                }
+                for (Figure figure : getView().getSelection()) {
+                    clipboard.add(new Pair<>(true, figure));
+                    getView().removeFromSelection(figure);
+                    getModel().removeFigure(figure);
+                }
+                toggleMenuOptions();
+            }
+        });
+        copy = new JMenuItem("Copy");
+        copy.setAccelerator(KeyStroke.getKeyStroke("control C"));
+        copy.addActionListener(e -> {
+            if (getView().getSelection().size() > 0) {
+                if (!clipboard.isEmpty()) {
+                    clipboard.clear();
+                }
+                clipboard.addAll(getView().getSelection().stream()
+                        .map(figure -> new Pair<>(false, figure)).collect(Collectors.toList()));
+                toggleMenuOptions();
+            }
+        });
+        paste = new JMenuItem("Paste");
+        paste.setAccelerator(KeyStroke.getKeyStroke("control V"));
+        paste.addActionListener(e -> {
+            if (!clipboard.isEmpty()) {
+                if (!getView().getSelection().isEmpty()) {
+                    getView().getSelection().stream().forEach(figure -> getView().removeFromSelection(figure));
+                }
+                clipboard.stream().forEach(pair -> {
+                    Figure newFigure = pair.getValue().clone();
+                    // move only on copy
+                    if (!pair.getKey()) {
+                        newFigure.move(10, 10);
+                    }
+                    getModel().addFigure(newFigure);
+                    getView().addToSelection(newFigure);
+                });
+            }
+        });
+		editMenu.add(cut);
+        editMenu.add(copy);
+        editMenu.add(paste);
 
 		editMenu.addSeparator();
 		JMenuItem clear = new JMenuItem("Clear");
@@ -116,7 +174,7 @@ public class StdContext extends AbstractContext {
                     getView().removeFromSelection(figure);
                 }));
 
-        // menu listener for group/ungroup
+        // menu listener for group/ungroup, cut, copy, paste
         editMenu.addMenuListener(new MenuListener() {
             @Override
             public void menuSelected(MenuEvent e) {
@@ -128,7 +186,7 @@ public class StdContext extends AbstractContext {
                 }
 
                 // ungroup
-                if (getView().getSelection().size() > 0) {
+                if (!getView().getSelection().isEmpty()) {
                     boolean enabled = false;
                     for (Figure figure : getView().getSelection()) {
                         if (figure instanceof FigureGroup) {
@@ -140,6 +198,8 @@ public class StdContext extends AbstractContext {
                 } else {
                     ungroup.setEnabled(false);
                 }
+
+                toggleMenuOptions();
             }
 
             @Override
@@ -349,5 +409,24 @@ public class StdContext extends AbstractContext {
 					+ chooser.getSelectedFile().getName());
 		}
 	}
+
+    @Override
+    public void toggleMenuOptions() {
+        // cut/copy
+        if (!getView().getSelection().isEmpty()) {
+            cut.setEnabled(true);
+            copy.setEnabled(true);
+        } else {
+            cut.setEnabled(false);
+            copy.setEnabled(false);
+        }
+
+        // paste
+        if (clipboard.isEmpty()) {
+            paste.setEnabled(false);
+        } else {
+            paste.setEnabled(true);
+        }
+    }
 
 }

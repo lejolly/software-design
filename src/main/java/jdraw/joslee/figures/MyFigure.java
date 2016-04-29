@@ -29,16 +29,13 @@ abstract class MyFigure implements Figure {
         }
     }
 
-    @Override
-    public Figure clone() {
-        return null;
-    }
-
     void notifyListeners() {
         FigureEvent event = new FigureEvent(this);
         for (FigureListener listener : new ArrayList<>(listeners)) {
             listener.figureChanged(event);
         }
     }
+
+    public abstract Figure clone();
 
 }

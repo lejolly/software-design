@@ -14,8 +14,8 @@ import java.util.List;
  */
 public class MyFigureGroup extends MyFigure implements FigureGroup {
 
-    DrawView drawView;
-    List<Figure> figures;
+    private DrawView drawView;
+    private List<Figure> figures;
 
     public MyFigureGroup(DrawView drawView) {
         this.drawView = drawView;
@@ -26,6 +26,14 @@ public class MyFigureGroup extends MyFigure implements FigureGroup {
         }
         drawView.getModel().addFigure(this);
         drawView.addToSelection(this);
+    }
+
+    private MyFigureGroup(MyFigureGroup myFigureGroup) {
+        this.drawView = myFigureGroup.getDrawView();
+        figures = new ArrayList<>();
+        for (Figure figure : myFigureGroup.getFigureParts()) {
+            figures.add(figure.clone());
+        }
     }
 
     @Override
@@ -84,12 +92,6 @@ public class MyFigureGroup extends MyFigure implements FigureGroup {
         return figures;
     }
 
-    public void ungroup() {
-        for (Figure figure : figures) {
-            drawView.getModel().addFigure(figure);
-        }
-    }
-
     /**
      * Returns a list of 8 handles for this Rectangle.
      * @return all handles that are attached to the targeted figure.
@@ -106,4 +108,12 @@ public class MyFigureGroup extends MyFigure implements FigureGroup {
         return handles;
     }
 
+    @Override
+    public Figure clone() {
+        return new MyFigureGroup(this);
+    }
+
+    public DrawView getDrawView() {
+        return drawView;
+    }
 }
