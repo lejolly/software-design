@@ -94,7 +94,6 @@ public final class StdDrawView extends JComponent implements DrawView {
 		addKeyListener(ieh);
 
         setConstrainer(new MyPointConstrainerStub());
-//		setConstrainer(new MySnapPointConstrainer(this));
 	}
 
 	@Override

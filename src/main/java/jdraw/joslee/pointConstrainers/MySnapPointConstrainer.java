@@ -27,7 +27,7 @@ public class MySnapPointConstrainer implements PointConstrainer {
     @Override
     public Point constrainPoint(Point p) {
         if (drawView.getSelection().size() == 1) {
-            return getClosestPoint(p, drawView.getSelection().get(0));
+            return getClosestOtherHandle(p, drawView.getSelection().get(0));
         } else {
             return p;
         }
@@ -38,7 +38,7 @@ public class MySnapPointConstrainer implements PointConstrainer {
     public int getStepX(boolean right) {
         if (drawView.getSelection().size() == 1) {
             Figure sourceFigure = drawView.getSelection().get(0);
-            ArrayList<FigureHandle> handles = getHandles(sourceFigure);
+            ArrayList<FigureHandle> handles = getOtherHandles(sourceFigure);
             if (!handles.isEmpty()) {
                 // take out handles which are not within y boundaries
                 // and take out handles that are far from x boundaries
@@ -104,7 +104,7 @@ public class MySnapPointConstrainer implements PointConstrainer {
     public int getStepY(boolean down) {
         if (drawView.getSelection().size() == 1) {
             Figure sourceFigure = drawView.getSelection().get(0);
-            ArrayList<FigureHandle> handles = getHandles(sourceFigure);
+            ArrayList<FigureHandle> handles = getOtherHandles(sourceFigure);
             if (!handles.isEmpty()) {
                 // take out handles which are not within x boundaries
                 // and take out handles that are far from y boundaries
@@ -185,19 +185,26 @@ public class MySnapPointConstrainer implements PointConstrainer {
 
     }
 
+    private Point getClosestSourceHandle(Point mouseLocation, Figure sourceFigure) {
+        ArrayList<FigureHandle> handles = new ArrayList<>(sourceFigure.getHandles());
+        Collections.sort(handles, (o1, o2) ->
+                getDistance(o1.getLocation(), mouseLocation).compareTo(getDistance(o2.getLocation(), mouseLocation)));
+        return handles.get(0).getLocation();
+    }
+
     // TODO fix snap to handle when using mouse, currently it snaps to the mouse cursor and not the handle
     @SuppressWarnings("unchecked")
-    private Point getClosestPoint(Point mouseLocation, Figure sourceFigure) {
-        ArrayList<FigureHandle> handles = getHandles(sourceFigure);
-        java.util.List<FigureHandle> closeHandles = handles.stream()
-                .filter(handle -> getDistance(handle.getLocation(), mouseLocation) > 0)
-                .collect(Collectors.toList());
-        Collections.sort(closeHandles, (o1, o2) ->
-                getDistance(o1.getLocation(), mouseLocation).compareTo(getDistance(o2.getLocation(), mouseLocation)));
-        if (closeHandles.isEmpty() || getDistance(closeHandles.get(0).getLocation(), mouseLocation) > SNAP_RANGE) {
+    private Point getClosestOtherHandle(Point mouseLocation, Figure sourceFigure) {
+        Point closestSourceHandle = getClosestSourceHandle(mouseLocation, sourceFigure);
+        ArrayList<FigureHandle> handles = getOtherHandles(sourceFigure);
+        Collections.sort(handles, (o1, o2) ->
+                getDistance(o1.getLocation(), closestSourceHandle)
+                        .compareTo(getDistance(o2.getLocation(), closestSourceHandle)));
+        if (handles.isEmpty() ||
+                getDistance(handles.get(0).getLocation(), mouseLocation) > SNAP_RANGE) {
             return mouseLocation;
         } else {
-            return closeHandles.get(0).getLocation();
+            return handles.get(0).getLocation();
         }
     }
 
@@ -205,7 +212,7 @@ public class MySnapPointConstrainer implements PointConstrainer {
         return Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2));
     }
 
-    private ArrayList<FigureHandle> getHandles(Figure sourceFigure) {
+    private ArrayList<FigureHandle> getOtherHandles(Figure sourceFigure) {
         // returns all handles except from the source figure
         ArrayList<FigureHandle> handles = new ArrayList<>();
         ArrayList<Figure> figures = new ArrayList<>();
