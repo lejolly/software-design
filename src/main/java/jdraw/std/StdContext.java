@@ -137,15 +137,21 @@ public class StdContext extends AbstractContext {
                 if (!getView().getSelection().isEmpty()) {
                     getView().getSelection().stream().forEach(figure -> getView().removeFromSelection(figure));
                 }
+                List<Pair<Boolean, Figure>> tempClipboard = new ArrayList<>();
                 clipboard.stream().forEach(pair -> {
                     Figure newFigure = pair.getValue().clone();
                     // move only on copy
                     if (!pair.getKey()) {
                         newFigure.move(10, 10);
                     }
+                    tempClipboard.add(new Pair<>(false, newFigure));
                     getModel().addFigure(newFigure);
                     getView().addToSelection(newFigure);
                 });
+                if (!tempClipboard.isEmpty()) {
+                    clipboard.clear();
+                    clipboard.addAll(tempClipboard);
+                }
             }
         });
 		editMenu.add(cut);
