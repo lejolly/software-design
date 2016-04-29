@@ -6,7 +6,7 @@
 package jdraw.std;
 
 import jdraw.framework.*;
-import jdraw.joslee.pointConstrainers.MySnapPointConstrainer;
+import jdraw.joslee.pointConstrainers.MyPointConstrainerStub;
 
 import javax.swing.*;
 import java.awt.*;
@@ -93,7 +93,8 @@ public final class StdDrawView extends JComponent implements DrawView {
 
 		addKeyListener(ieh);
 
-		setConstrainer(new MySnapPointConstrainer(this));
+        setConstrainer(new MyPointConstrainerStub());
+//		setConstrainer(new MySnapPointConstrainer(this));
 	}
 
 	@Override
@@ -344,7 +345,7 @@ public final class StdDrawView extends JComponent implements DrawView {
 		@Override
 		public void mousePressed(MouseEvent e) {
 			requestFocus();
-			
+
 			Point p = constrainPoint(new Point(e.getX(), e.getY()), 1);
 			if (dragging > 0) {
 				// mouse was pressed during dragging, e.g. another mouse button.

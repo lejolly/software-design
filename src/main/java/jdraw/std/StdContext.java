@@ -164,18 +164,49 @@ public class StdContext extends AbstractContext {
 		orderMenu.add(backItem);
 		editMenu.add(orderMenu);
 
-		// TODO ActionListener listening to JRadioButtonMenuItem → view.setConstrainer(your_constrainer);
 		JMenu grid = new JMenu("Grid...");
-        JMenuItem noGrid = new JMenuItem("No Grid");
+		JRadioButtonMenuItem noGrid = new JRadioButtonMenuItem("No Grid");
         noGrid.addActionListener(e -> getView().setConstrainer(new MyPointConstrainerStub()));
-		JMenuItem fivePointGrid = new JMenuItem("5 Point Grid");
+		JRadioButtonMenuItem fivePointGrid = new JRadioButtonMenuItem("5 Point Grid");
         fivePointGrid.addActionListener(e -> getView().setConstrainer(new My5PointConstrainer()));
-        JMenuItem snapPointGrid = new JMenuItem("Snap Point Grid");
+		JRadioButtonMenuItem snapPointGrid = new JRadioButtonMenuItem("Snap Point Grid");
         snapPointGrid.addActionListener(e -> getView().setConstrainer(new MySnapPointConstrainer(getView())));
         grid.add(noGrid);
         grid.add(fivePointGrid);
         grid.add(snapPointGrid);
 		editMenu.add(grid);
+
+        // for radio buttons
+		grid.addMenuListener(new MenuListener() {
+            @Override
+            public void menuSelected(MenuEvent e) {
+                if (getView().getConstrainer() instanceof MyPointConstrainerStub) {
+                    noGrid.setSelected(true);
+                } else {
+                    noGrid.setSelected(false);
+                }
+                if (getView().getConstrainer() instanceof My5PointConstrainer) {
+                    fivePointGrid.setSelected(true);
+                } else {
+                    fivePointGrid.setSelected(false);
+                }
+                if (getView().getConstrainer() instanceof MySnapPointConstrainer) {
+                    snapPointGrid.setSelected(true);
+                } else {
+                    snapPointGrid.setSelected(false);
+                }
+            }
+
+            @Override
+            public void menuDeselected(MenuEvent e) {
+
+            }
+
+            @Override
+            public void menuCanceled(MenuEvent e) {
+
+            }
+        });
 
 		return editMenu;
 	}
