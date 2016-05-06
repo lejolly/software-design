@@ -376,7 +376,7 @@ public class StdContext extends AbstractContext {
 			}
 		};
 		chooser.setFileFilter(filter);
-		int res = chooser.showOpenDialog(this);
+		int res = chooser.showSaveDialog(this);
 
 		if (res == JFileChooser.APPROVE_OPTION) {
 			// save graphic
