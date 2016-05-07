@@ -106,28 +106,28 @@ public class MyFigureGroupHandle extends MyHandle {
     void resize(int x, int y) {
         switch(this.type) {
             case NW:
-                owner.setBounds(new Point(x, y), endPoint);
+                getOwner().setBounds(new Point(x, y), endPoint);
                 break;
             case N:
-                owner.setBounds(new Point(startPoint.x, y), endPoint);
+                getOwner().setBounds(new Point(startPoint.x, y), endPoint);
                 break;
             case NE:
-                owner.setBounds(new Point(x, endPoint.y), new Point(startPoint.x, y));
+                getOwner().setBounds(new Point(x, endPoint.y), new Point(startPoint.x, y));
                 break;
             case E:
-                owner.setBounds(startPoint, new Point(x, endPoint.y));
+                getOwner().setBounds(startPoint, new Point(x, endPoint.y));
                 break;
             case SE:
-                owner.setBounds(startPoint, new Point(x, y));
+                getOwner().setBounds(startPoint, new Point(x, y));
                 break;
             case S:
-                owner.setBounds(startPoint, new Point(endPoint.x, y));
+                getOwner().setBounds(startPoint, new Point(endPoint.x, y));
                 break;
             case SW:
-                owner.setBounds(new Point(x, startPoint.y), new Point(endPoint.x, y));
+                getOwner().setBounds(new Point(x, startPoint.y), new Point(endPoint.x, y));
                 break;
             case W:
-                owner.setBounds(new Point(x, startPoint.y), endPoint);
+                getOwner().setBounds(new Point(x, startPoint.y), endPoint);
                 break;
             case CENTER:
                 break;

@@ -6,12 +6,9 @@
 package jdraw.joslee.figures;
 
 import jdraw.framework.Figure;
-import jdraw.framework.FigureHandle;
 
 import java.awt.*;
 import java.awt.geom.Line2D;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Represents lines in JDraw.
@@ -77,24 +74,22 @@ public class MyLine extends MyFigure {
     }
 
     @Override
-    public Rectangle getBounds() {
+    public Rectangle getBounds(Object caller) {
         return line.getBounds();
-    }
-
-    @Override
-    public List<FigureHandle> getHandles() {
-        List<FigureHandle> handles = new ArrayList<>();
-        for (MyLineHandle.Type direction : MyLineHandle.Type.values()) {
-            MyLineHandle myLineHandle = new MyLineHandle(this, direction);
-            handles.add(myLineHandle);
-            addFigureListener(myLineHandle);
-        }
-        return handles;
     }
 
     @Override
     public Figure clone() {
         return new MyLine(this);
+    }
+
+    @Override
+    void createHandles() {
+        for (MyLineHandle.Type direction : MyLineHandle.Type.values()) {
+            MyLineHandle myLineHandle = new MyLineHandle(this, direction);
+            handles.add(myLineHandle);
+            addFigureListener(myLineHandle);
+        }
     }
 
     public Point getP1() {

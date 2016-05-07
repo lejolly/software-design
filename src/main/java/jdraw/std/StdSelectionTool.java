@@ -5,22 +5,15 @@
 
 package jdraw.std;
 
-import java.awt.Cursor;
-import java.awt.Rectangle;
+import jdraw.framework.*;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-
-import jdraw.framework.DrawContext;
-import jdraw.framework.DrawTool;
-import jdraw.framework.DrawView;
-import jdraw.framework.Figure;
-import jdraw.framework.FigureHandle;
 
 /**
  * The default tool is used for figure selection and general manipulation of one or more figures.
@@ -224,7 +217,7 @@ public class StdSelectionTool implements DrawTool {
 				new Rectangle(min(sx0, sx1), min(sy0, sy1), abs(sx1 - sx0), abs(sy1 - sy0));
 							  
 			for (Figure f : view.getModel().getFigures()) {
-				if (contains(selRectangle, f.getBounds())) {
+				if (contains(selRectangle, f.getBounds(this))) {
 					sel.add(f);					
 				}
 			}

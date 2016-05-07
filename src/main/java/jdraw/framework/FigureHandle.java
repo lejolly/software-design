@@ -95,4 +95,7 @@ public interface FigureHandle {
 	 * @param v the view in which the interaction is performed
 	 */
 	void stopInteraction(int x, int y, MouseEvent e, DrawView v);
+
+	void setOwner(Figure figure);
+
 }

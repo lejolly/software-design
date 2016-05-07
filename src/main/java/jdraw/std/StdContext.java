@@ -10,6 +10,7 @@ import jdraw.joslee.figures.MyFigureGroup;
 import jdraw.joslee.figures.MyLineTool;
 import jdraw.joslee.figures.MyOvalTool;
 import jdraw.joslee.figures.MyRectTool;
+import jdraw.joslee.figures.decorators.*;
 import jdraw.joslee.pointConstrainers.My5PointConstrainer;
 import jdraw.joslee.pointConstrainers.MyPointConstrainerStub;
 import jdraw.joslee.pointConstrainers.MySnapPointConstrainer;
@@ -274,6 +275,62 @@ public class StdContext extends AbstractContext {
             }
         });
 
+		JMenu decoratorsMenu = new JMenu("Decorators...");
+		JMenuItem borderDecorator = new JMenuItem("Add Border");
+		borderDecorator.addActionListener(e -> {
+            List<Figure> figures = getView().getSelection();
+            if (!figures.isEmpty()) {
+                for (Figure figure : figures) {
+                    replaceFigure(figure, new BorderDecorator(figure, ((FigureListener) getModel())));
+                }
+            }
+		});
+        JMenuItem bundleDecorator = new JMenuItem("Toggle Resizing");
+        bundleDecorator.addActionListener(e -> {
+            List<Figure> figures = getView().getSelection();
+            if (!figures.isEmpty()) {
+                for (Figure figure : figures) {
+                    if (figure instanceof BundleDecorator) {
+                        replaceFigure(figure, ((DecoratorFigure) figure).getInnerFigure());
+                    } else {
+                        replaceFigure(figure, new BundleDecorator(figure, ((FigureListener) getModel())));
+                    }
+                }
+            }
+        });
+        JMenuItem animationDecorator = new JMenuItem("Toggle Animation");
+        animationDecorator.addActionListener(e -> {
+            List<Figure> figures = getView().getSelection();
+            if (!figures.isEmpty()) {
+                for (Figure figure : figures) {
+                    if (figure instanceof AnimationDecorator) {
+                        ((AnimationDecorator) figure).stopAnimation();
+                        replaceFigure(figure, ((DecoratorFigure) figure).getInnerFigure());
+                    } else {
+                        replaceFigure(figure, new AnimationDecorator(figure, ((FigureListener) getModel())));
+                    }
+                }
+            }
+        });
+        JMenuItem logDecorator = new JMenuItem("Toggle Logging");
+        logDecorator.addActionListener(e -> {
+            List<Figure> figures = getView().getSelection();
+            if (!figures.isEmpty()) {
+                for (Figure figure : figures) {
+                    if (figure instanceof LogDecorator) {
+                        replaceFigure(figure, ((DecoratorFigure) figure).getInnerFigure());
+                    } else {
+                        replaceFigure(figure, new LogDecorator(figure, ((FigureListener) getModel())));
+                    }
+                }
+            }
+        });
+        decoratorsMenu.add(borderDecorator);
+        decoratorsMenu.add(bundleDecorator);
+        decoratorsMenu.add(animationDecorator);
+        decoratorsMenu.add(logDecorator);
+        editMenu.add(decoratorsMenu);
+
 		return editMenu;
 	}
 
@@ -433,6 +490,14 @@ public class StdContext extends AbstractContext {
         } else {
             paste.setEnabled(true);
         }
+    }
+
+    private void replaceFigure(Figure oldFigure, Figure newFigure) {
+        // remove first then add, otherwise listeners get messed up
+        getModel().removeFigure(oldFigure);
+        getView().removeFromSelection(oldFigure);
+        getModel().addFigure(newFigure);
+        getView().addToSelection(newFigure);
     }
 
 }

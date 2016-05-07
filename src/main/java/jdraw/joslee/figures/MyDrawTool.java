@@ -110,7 +110,7 @@ abstract class MyDrawTool implements DrawTool {
      */
     public void mouseDrag(int x, int y, MouseEvent e) {
         newFigure.setBounds(anchor, new Point(x, y));
-        java.awt.Rectangle r = newFigure.getBounds();
+        java.awt.Rectangle r = newFigure.getBounds(this);
         this.context.showStatusText("w: " + r.width + ", h: " + r.height);
     }
 

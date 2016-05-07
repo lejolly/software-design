@@ -3,7 +3,6 @@ package jdraw.joslee.figures;
 import jdraw.framework.DrawView;
 import jdraw.framework.Figure;
 import jdraw.framework.FigureGroup;
-import jdraw.framework.FigureHandle;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -75,13 +74,13 @@ public class MyFigureGroup extends MyFigure implements FigureGroup {
     }
 
     @Override
-    public Rectangle getBounds() {
+    public Rectangle getBounds(Object caller) {
         Rectangle bounds = null;
         for (Figure figure : figures) {
             if (bounds == null) {
-                bounds = figure.getBounds();
+                bounds = figure.getBounds(this);
             } else {
-                bounds = bounds.union(figure.getBounds());
+                bounds = bounds.union(figure.getBounds(this));
             }
         }
         return bounds;
@@ -92,25 +91,18 @@ public class MyFigureGroup extends MyFigure implements FigureGroup {
         return figures;
     }
 
-    /**
-     * Returns a list of 8 handles for this Rectangle.
-     * @return all handles that are attached to the targeted figure.
-     * @see jdraw.framework.Figure#getHandles()
-     */
     @Override
-    public List<FigureHandle> getHandles() {
-        List<FigureHandle> handles = new ArrayList<>();
+    public Figure clone() {
+        return new MyFigureGroup(this);
+    }
+
+    @Override
+    void createHandles() {
         for (MyFigureGroupHandle.Type direction : MyFigureGroupHandle.Type.values()) {
             MyFigureGroupHandle myFigureGroupHandle = new MyFigureGroupHandle(this, direction);
             handles.add(myFigureGroupHandle);
             addFigureListener(myFigureGroupHandle);
         }
-        return handles;
-    }
-
-    @Override
-    public Figure clone() {
-        return new MyFigureGroup(this);
     }
 
     public DrawView getDrawView() {

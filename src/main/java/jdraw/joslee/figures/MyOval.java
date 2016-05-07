@@ -6,12 +6,9 @@
 package jdraw.joslee.figures;
 
 import jdraw.framework.Figure;
-import jdraw.framework.FigureHandle;
 
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Represents ovals in JDraw.
@@ -40,7 +37,7 @@ public class MyOval extends MyFigure {
     }
 
     private MyOval(MyOval myOval) {
-        Rectangle bounds = myOval.getBounds();
+        Rectangle bounds = myOval.getBounds(this);
         oval = new Ellipse2D.Double(bounds.x, bounds.y, bounds.width, bounds.height);
     }
 
@@ -78,24 +75,22 @@ public class MyOval extends MyFigure {
     }
 
     @Override
-    public Rectangle getBounds() {
+    public Rectangle getBounds(Object caller) {
         return oval.getBounds();
-    }
-
-    @Override
-    public List<FigureHandle> getHandles() {
-        List<FigureHandle> handles = new ArrayList<>();
-        for (MyOvalHandle.Type direction : MyOvalHandle.Type.values()) {
-            MyOvalHandle myOvalHandle = new MyOvalHandle(this, direction);
-            handles.add(myOvalHandle);
-            addFigureListener(myOvalHandle);
-        }
-        return handles;
     }
 
     @Override
     public Figure clone() {
         return new MyOval(this);
+    }
+
+    @Override
+    void createHandles() {
+        for (MyOvalHandle.Type direction : MyOvalHandle.Type.values()) {
+            MyOvalHandle myOvalHandle = new MyOvalHandle(this, direction);
+            handles.add(myOvalHandle);
+            addFigureListener(myOvalHandle);
+        }
     }
 
 }

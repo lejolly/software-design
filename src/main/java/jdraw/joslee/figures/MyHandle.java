@@ -9,7 +9,7 @@ public abstract class MyHandle implements FigureHandle, FigureListener {
 
     static final int HANDLE_SIZE = 6;
 
-    Figure owner;
+    private Figure owner;
     String name;
     Cursor cursor;
     Point startPoint;
@@ -27,7 +27,7 @@ public abstract class MyHandle implements FigureHandle, FigureListener {
     }
 
     public Point getOwnerLocation() {
-        return owner.getBounds().getLocation();
+        return owner.getBounds(this).getLocation();
     }
 
     @Override
@@ -55,7 +55,7 @@ public abstract class MyHandle implements FigureHandle, FigureListener {
 
     @Override
     public void startInteraction(int x, int y, MouseEvent e, DrawView v) {
-        Rectangle bounds = owner.getBounds();
+        Rectangle bounds = owner.getBounds(this);
         startPoint = new Point(bounds.x, bounds.y);
         endPoint = new Point(bounds.x + bounds.width, bounds.y + bounds.height);
     }
@@ -73,11 +73,11 @@ public abstract class MyHandle implements FigureHandle, FigureListener {
     }
 
     int getWidth() {
-        return owner.getBounds().width;
+        return owner.getBounds(this).width;
     }
 
     int getHeight() {
-        return owner.getBounds().height;
+        return owner.getBounds(this).height;
     }
 
     abstract void setLocation();
@@ -85,5 +85,10 @@ public abstract class MyHandle implements FigureHandle, FigureListener {
     abstract void changeNameAndCursor();
 
     abstract void resize(int x, int y);
+
+    @Override
+    public void setOwner(Figure figure) {
+        this.owner = figure;
+    }
 
 }

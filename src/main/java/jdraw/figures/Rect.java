@@ -66,7 +66,7 @@ public class Rect implements Figure {
     }
 
     @Override
-    public Rectangle getBounds() {
+    public Rectangle getBounds(Object caller) {
         return rectangle.getBounds();
     }
 
@@ -93,5 +93,8 @@ public class Rect implements Figure {
     public Figure clone() {
         return null;
     }
+
+    @Override
+    public void notifyListeners() {}
 
 }

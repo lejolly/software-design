@@ -26,12 +26,12 @@ public class MyLineHandle extends MyHandle {
     void setLocation() {
         switch(this.type) {
             case FIRST:
-                handleBox.setLocation(((MyLine) owner).getP1().x - (HANDLE_SIZE / 2),
-                        ((MyLine) owner).getP1().y - (HANDLE_SIZE / 2));
+                handleBox.setLocation(((MyLine) getOwner()).getP1().x - (HANDLE_SIZE / 2),
+                        ((MyLine) getOwner()).getP1().y - (HANDLE_SIZE / 2));
                 break;
             case SECOND:
-                handleBox.setLocation(((MyLine) owner).getP2().x - (HANDLE_SIZE / 2),
-                        ((MyLine) owner).getP2().y - (HANDLE_SIZE / 2));
+                handleBox.setLocation(((MyLine) getOwner()).getP2().x - (HANDLE_SIZE / 2),
+                        ((MyLine) getOwner()).getP2().y - (HANDLE_SIZE / 2));
                 break;
         }
     }
@@ -52,16 +52,16 @@ public class MyLineHandle extends MyHandle {
         switch(this.type) {
             case FIRST:
                 if (x > endPoint.x || y > endPoint.y) {
-                    owner.setBounds(endPoint, new Point(x, y));
+                    getOwner().setBounds(endPoint, new Point(x, y));
                 } else {
-                    owner.setBounds(new Point(x, y), endPoint);
+                    getOwner().setBounds(new Point(x, y), endPoint);
                 }
                 break;
             case SECOND:
                 if (x < startPoint.x || y < startPoint.y) {
-                    owner.setBounds(new Point(x, y), startPoint);
+                    getOwner().setBounds(new Point(x, y), startPoint);
                 } else {
-                    owner.setBounds(startPoint, new Point(x, y));
+                    getOwner().setBounds(startPoint, new Point(x, y));
                 }
                 break;
         }

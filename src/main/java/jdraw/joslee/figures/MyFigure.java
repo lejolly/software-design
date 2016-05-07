@@ -2,17 +2,20 @@ package jdraw.joslee.figures;
 
 import jdraw.framework.Figure;
 import jdraw.framework.FigureEvent;
+import jdraw.framework.FigureHandle;
 import jdraw.framework.FigureListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
-abstract class MyFigure implements Figure {
+public abstract class MyFigure implements Figure {
 
     private List<FigureListener> listeners;
+    protected List<FigureHandle> handles;
 
     MyFigure() {
         listeners = new ArrayList<>();
+        handles = new ArrayList<>();
     }
 
     @Override
@@ -29,7 +32,8 @@ abstract class MyFigure implements Figure {
         }
     }
 
-    void notifyListeners() {
+    @Override
+    public void notifyListeners() {
         FigureEvent event = new FigureEvent(this);
         for (FigureListener listener : new ArrayList<>(listeners)) {
             listener.figureChanged(event);
@@ -37,5 +41,17 @@ abstract class MyFigure implements Figure {
     }
 
     public abstract Figure clone();
+
+    abstract void createHandles();
+
+    /**
+     * Returns a list of handles for this figure.
+     * @return all handles that are attached to the targeted figure.
+     * @see jdraw.framework.Figure#getHandles()
+     */
+    @Override
+    public List<FigureHandle> getHandles() {
+        return handles;
+    }
 
 }

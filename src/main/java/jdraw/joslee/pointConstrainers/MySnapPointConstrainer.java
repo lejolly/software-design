@@ -47,8 +47,8 @@ public class MySnapPointConstrainer implements PointConstrainer {
                         .filter(handle -> isCloseToXBoundaries(handle, sourceFigure))
                         .collect(Collectors.toList());
                 if (!closeHandles.isEmpty()) {
-                    int x1 = sourceFigure.getBounds().x;
-                    int x2 = sourceFigure.getBounds().x + sourceFigure.getBounds().width;
+                    int x1 = sourceFigure.getBounds(this).x;
+                    int x2 = sourceFigure.getBounds(this).x + sourceFigure.getBounds(this).width;
                     java.util.List<Pair<Integer, FigureHandle>> leftHandles;
                     java.util.List<Pair<Integer, FigureHandle>> rightHandles;
                     if (!right) {
@@ -88,15 +88,16 @@ public class MySnapPointConstrainer implements PointConstrainer {
     }
 
     private boolean isCloseToXBoundaries(FigureHandle handle, Figure figure) {
-        return (Math.abs(handle.getLocation().x - figure.getBounds().x) <= SNAP_RANGE
-                && Math.abs(handle.getLocation().x - figure.getBounds().x) > 0)||
-                (Math.abs(handle.getLocation().x - figure.getBounds().x - figure.getBounds().width) <= SNAP_RANGE
-                && Math.abs(handle.getLocation().x - figure.getBounds().x - figure.getBounds().width) > 0);
+        return (Math.abs(handle.getLocation().x - figure.getBounds(this).x) <= SNAP_RANGE
+                && Math.abs(handle.getLocation().x - figure.getBounds(this).x) > 0)||
+                (Math.abs(handle.getLocation().x - figure.getBounds(this).x - figure.getBounds(this).width)
+                        <= SNAP_RANGE
+                && Math.abs(handle.getLocation().x - figure.getBounds(this).x - figure.getBounds(this).width) > 0);
     }
 
     private boolean isWithinYBoundaries(FigureHandle handle, Figure figure) {
-        return handle.getLocation().y >= figure.getBounds().y &&
-                handle.getLocation().y <= (figure.getBounds().y + figure.getBounds().height);
+        return handle.getLocation().y >= figure.getBounds(this).y &&
+                handle.getLocation().y <= (figure.getBounds(this).y + figure.getBounds(this).height);
     }
 
     @SuppressWarnings("Duplicates")
@@ -113,8 +114,8 @@ public class MySnapPointConstrainer implements PointConstrainer {
                         .filter(handle -> isCloseToYBoundaries(handle, sourceFigure))
                         .collect(Collectors.toList());
                 if (!closeHandles.isEmpty()) {
-                    int y1 = sourceFigure.getBounds().y;
-                    int y2 = sourceFigure.getBounds().y + sourceFigure.getBounds().height;
+                    int y1 = sourceFigure.getBounds(this).y;
+                    int y2 = sourceFigure.getBounds(this).y + sourceFigure.getBounds(this).height;
                     java.util.List<Pair<Integer, FigureHandle>> topHandles;
                     java.util.List<Pair<Integer, FigureHandle>> bottomHandles;
                     if (!down) {
@@ -154,15 +155,16 @@ public class MySnapPointConstrainer implements PointConstrainer {
     }
 
     private boolean isCloseToYBoundaries(FigureHandle handle, Figure figure) {
-        return (Math.abs(handle.getLocation().y - figure.getBounds().y) <= SNAP_RANGE
-                && Math.abs(handle.getLocation().y - figure.getBounds().y) > 0)||
-                (Math.abs(handle.getLocation().y - figure.getBounds().y - figure.getBounds().height) <= SNAP_RANGE
-                        && Math.abs(handle.getLocation().y - figure.getBounds().y - figure.getBounds().height) > 0);
+        return (Math.abs(handle.getLocation().y - figure.getBounds(this).y) <= SNAP_RANGE
+                && Math.abs(handle.getLocation().y - figure.getBounds(this).y) > 0)||
+                (Math.abs(handle.getLocation().y - figure.getBounds(this).y - figure.getBounds(this).height)
+                        <= SNAP_RANGE
+                        && Math.abs(handle.getLocation().y - figure.getBounds(this).y - figure.getBounds(this).height) > 0);
     }
 
     private boolean isWithinXBoundaries(FigureHandle handle, Figure figure) {
-        return handle.getLocation().x >= figure.getBounds().x &&
-                handle.getLocation().x <= (figure.getBounds().x + figure.getBounds().width);
+        return handle.getLocation().x >= figure.getBounds(this).x &&
+                handle.getLocation().x <= (figure.getBounds(this).x + figure.getBounds(this).width);
     }
 
     @Override

@@ -67,7 +67,7 @@ public interface Figure extends Serializable, Cloneable {
 	 * 
 	 * @return bounds of the figure
 	 */
-	Rectangle getBounds();
+	Rectangle getBounds(Object caller);
 
 	/**
 	 * Returns a list of handles. Handles are used to manipulate a figure. If
@@ -107,4 +107,7 @@ public interface Figure extends Serializable, Cloneable {
 	 * @return clone of figure
 	 */
 	Figure clone();
+
+    void notifyListeners();
+
 }

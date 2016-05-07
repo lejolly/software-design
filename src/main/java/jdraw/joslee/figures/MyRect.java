@@ -6,11 +6,8 @@
 package jdraw.joslee.figures;
 
 import jdraw.framework.Figure;
-import jdraw.framework.FigureHandle;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Represents rectangles in JDraw.
@@ -34,10 +31,11 @@ public class MyRect extends MyFigure {
      */
     public MyRect(int x, int y, int w, int h) {
         rectangle = new Rectangle(x, y, w, h);
+        createHandles();
     }
 
     private MyRect(MyRect myRect) {
-        Rectangle bounds = myRect.getBounds();
+        Rectangle bounds = myRect.getBounds(this);
         rectangle = new Rectangle(bounds.x, bounds.y, bounds.width, bounds.height);
     }
 
@@ -75,29 +73,22 @@ public class MyRect extends MyFigure {
     }
 
     @Override
-    public Rectangle getBounds() {
+    public Rectangle getBounds(Object caller) {
         return rectangle.getBounds();
-    }
-
-    /**
-     * Returns a list of 8 handles for this Rectangle.
-     * @return all handles that are attached to the targeted figure.
-     * @see jdraw.framework.Figure#getHandles()
-     */
-    @Override
-    public List<FigureHandle> getHandles() {
-        List<FigureHandle> handles = new ArrayList<>();
-        for (MyRectHandle.Type direction : MyRectHandle.Type.values()) {
-            MyRectHandle myRectHandle = new MyRectHandle(this, direction);
-            handles.add(myRectHandle);
-            addFigureListener(myRectHandle);
-        }
-        return handles;
     }
 
     @Override
     public Figure clone() {
         return new MyRect(this);
+    }
+
+    @Override
+    void createHandles() {
+        for (MyRectHandle.Type direction : MyRectHandle.Type.values()) {
+            MyRectHandle myRectHandle = new MyRectHandle(this, direction);
+            handles.add(myRectHandle);
+            addFigureListener(myRectHandle);
+        }
     }
 
 }

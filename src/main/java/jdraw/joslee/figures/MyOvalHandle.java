@@ -75,30 +75,30 @@ public class MyOvalHandle extends MyHandle {
         switch(this.type) {
             case N:
                 if (y < endPoint.y) {
-                    owner.setBounds(new Point(startPoint.x, y), endPoint);
+                    getOwner().setBounds(new Point(startPoint.x, y), endPoint);
                 } else {
-                    owner.setBounds(new Point(startPoint.x, endPoint.y), new Point(endPoint.x, y));
+                    getOwner().setBounds(new Point(startPoint.x, endPoint.y), new Point(endPoint.x, y));
                 }
                 break;
             case E:
                 if (x > startPoint.x) {
-                    owner.setBounds(startPoint, new Point(x, endPoint.y));
+                    getOwner().setBounds(startPoint, new Point(x, endPoint.y));
                 } else {
-                    owner.setBounds(new Point(x, startPoint.y), new Point(startPoint.x, endPoint.y));
+                    getOwner().setBounds(new Point(x, startPoint.y), new Point(startPoint.x, endPoint.y));
                 }
                 break;
             case S:
                 if (y > startPoint.y) {
-                    owner.setBounds(startPoint, new Point(endPoint.x, y));
+                    getOwner().setBounds(startPoint, new Point(endPoint.x, y));
                 } else {
-                    owner.setBounds(new Point(startPoint.x, y), new Point(endPoint.x, startPoint.y));
+                    getOwner().setBounds(new Point(startPoint.x, y), new Point(endPoint.x, startPoint.y));
                 }
                 break;
             case W:
                 if (x < endPoint.x) {
-                    owner.setBounds(new Point(x, startPoint.y), endPoint);
+                    getOwner().setBounds(new Point(x, startPoint.y), endPoint);
                 } else {
-                    owner.setBounds(new Point(endPoint.x, startPoint.y), new Point(x, endPoint.y));
+                    getOwner().setBounds(new Point(endPoint.x, startPoint.y), new Point(x, endPoint.y));
                 }
                 break;
             case CENTER:

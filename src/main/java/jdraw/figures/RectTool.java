@@ -112,7 +112,7 @@ public class RectTool implements DrawTool {
 	 */
 	public void mouseDrag(int x, int y, MouseEvent e) {
 		newRect.setBounds(anchor, new Point(x, y));
-		java.awt.Rectangle r = newRect.getBounds();
+		java.awt.Rectangle r = newRect.getBounds(this);
 		this.context.showStatusText("w: " + r.width + ", h: " + r.height);
 	}
 
