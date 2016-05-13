@@ -3,16 +3,18 @@
  * All Rights Reserved.
  */
 
-package jdraw.joslee.figures;
+package jdraw.joslee.figures.drawTools;
 
 import jdraw.framework.DrawContext;
+import jdraw.joslee.figures.MyFigure;
+import jdraw.joslee.figures.MyRect;
 
 import javax.swing.*;
 
 /**
  * This tool defines a mode for drawing rectangles.
  *
- * @see jdraw.framework.Figure
+ * @see jdraw.framework.MyFigure
  *
  * @author  Christoph Denzler, Joshua Lee
  */
@@ -24,7 +26,7 @@ public class MyRectTool extends MyDrawTool {
 
     @Override
     MyFigure getNewFigure(int x, int y) {
-        return new MyRect(x, y, 0, 0);
+        return new MyRect(super.getModel(), x, y, 0, 0);
     }
 
     @Override

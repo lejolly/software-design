@@ -1,8 +1,10 @@
 package jdraw.joslee.figures;
 
+import jdraw.framework.DrawModel;
 import jdraw.framework.DrawView;
 import jdraw.framework.Figure;
 import jdraw.framework.FigureGroup;
+import jdraw.joslee.figures.handles.MyFigureGroupHandle;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -16,7 +18,8 @@ public class MyFigureGroup extends MyFigure implements FigureGroup {
     private DrawView drawView;
     private List<Figure> figures;
 
-    public MyFigureGroup(DrawView drawView) {
+    public MyFigureGroup(DrawModel drawModel, DrawView drawView) {
+        super(drawModel);
         this.drawView = drawView;
         figures = new ArrayList<>(drawView.getSelection());
         for (Figure figure : figures) {
@@ -28,6 +31,7 @@ public class MyFigureGroup extends MyFigure implements FigureGroup {
     }
 
     private MyFigureGroup(MyFigureGroup myFigureGroup) {
+        super(myFigureGroup.getDrawModel());
         this.drawView = myFigureGroup.getDrawView();
         figures = new ArrayList<>();
         for (Figure figure : myFigureGroup.getFigureParts()) {
@@ -97,7 +101,7 @@ public class MyFigureGroup extends MyFigure implements FigureGroup {
     }
 
     @Override
-    void createHandles() {
+    public void createHandles() {
         for (MyFigureGroupHandle.Type direction : MyFigureGroupHandle.Type.values()) {
             MyFigureGroupHandle myFigureGroupHandle = new MyFigureGroupHandle(this, direction);
             handles.add(myFigureGroupHandle);
@@ -108,4 +112,5 @@ public class MyFigureGroup extends MyFigure implements FigureGroup {
     public DrawView getDrawView() {
         return drawView;
     }
+
 }

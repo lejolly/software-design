@@ -1,4 +1,6 @@
-package jdraw.joslee.figures;
+package jdraw.joslee.figures.handles;
+
+import jdraw.joslee.figures.MyLine;
 
 import java.awt.*;
 
@@ -11,7 +13,7 @@ public class MyLineHandle extends MyHandle {
 
     private Type type;
 
-    MyLineHandle(MyLine owner, Type type) {
+    public MyLineHandle(MyLine owner, Type type) {
         super(owner);
         this.type = type;
         setLocation();

@@ -6,7 +6,6 @@
 package jdraw.joslee;
 
 import jdraw.framework.*;
-import jdraw.std.EmptyDrawCommandHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,8 +65,7 @@ public class MyDrawModel implements DrawModel, FigureListener {
     }
 
     /** The draw command handler. Initialized here with a dummy implementation. */
-    // TODO initialize with your implementation of the undo/redo-assignment.
-    private DrawCommandHandler handler = new EmptyDrawCommandHandler();
+    private DrawCommandHandler handler = new MyDrawCommandHandler();
 
     /**
      * Retrieve the draw command handler in use.

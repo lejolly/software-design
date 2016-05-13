@@ -6,11 +6,12 @@ package jdraw.std;
 
 import javafx.util.Pair;
 import jdraw.framework.*;
+import jdraw.joslee.figures.MyFigure;
 import jdraw.joslee.figures.MyFigureGroup;
-import jdraw.joslee.figures.MyLineTool;
-import jdraw.joslee.figures.MyOvalTool;
-import jdraw.joslee.figures.MyRectTool;
 import jdraw.joslee.figures.decorators.*;
+import jdraw.joslee.figures.drawTools.MyLineTool;
+import jdraw.joslee.figures.drawTools.MyOvalTool;
+import jdraw.joslee.figures.drawTools.MyRectTool;
 import jdraw.joslee.pointConstrainers.My5PointConstrainer;
 import jdraw.joslee.pointConstrainers.MyPointConstrainerStub;
 import jdraw.joslee.pointConstrainers.MySnapPointConstrainer;
@@ -167,7 +168,7 @@ public class StdContext extends AbstractContext {
 		editMenu.addSeparator();
         JMenuItem group = new JMenuItem("Group");
         editMenu.add(group);
-        group.addActionListener(e -> new MyFigureGroup(getView()));
+        group.addActionListener(e -> new MyFigureGroup(getModel(), getView()));
 
         JMenuItem ungroup = new JMenuItem("Ungroup");
         editMenu.add(ungroup);
@@ -281,7 +282,8 @@ public class StdContext extends AbstractContext {
             List<Figure> figures = getView().getSelection();
             if (!figures.isEmpty()) {
                 for (Figure figure : figures) {
-                    replaceFigure(figure, new BorderDecorator(figure, ((FigureListener) getModel())));
+                    replaceFigure(figure,
+                            new BorderDecorator(getModel(), (MyFigure) figure, ((FigureListener) getModel())));
                 }
             }
 		});
@@ -293,7 +295,8 @@ public class StdContext extends AbstractContext {
                     if (figure instanceof BundleDecorator) {
                         replaceFigure(figure, ((DecoratorFigure) figure).getInnerFigure());
                     } else {
-                        replaceFigure(figure, new BundleDecorator(figure, ((FigureListener) getModel())));
+                        replaceFigure(figure,
+                                new BundleDecorator(getModel(), (MyFigure) figure, ((FigureListener) getModel())));
                     }
                 }
             }
@@ -307,7 +310,8 @@ public class StdContext extends AbstractContext {
                         ((AnimationDecorator) figure).stopAnimation();
                         replaceFigure(figure, ((DecoratorFigure) figure).getInnerFigure());
                     } else {
-                        replaceFigure(figure, new AnimationDecorator(figure, ((FigureListener) getModel())));
+                        replaceFigure(figure,
+                                new AnimationDecorator(getModel(), (MyFigure) figure, ((FigureListener) getModel())));
                     }
                 }
             }
@@ -320,7 +324,8 @@ public class StdContext extends AbstractContext {
                     if (figure instanceof LogDecorator) {
                         replaceFigure(figure, ((DecoratorFigure) figure).getInnerFigure());
                     } else {
-                        replaceFigure(figure, new LogDecorator(figure, ((FigureListener) getModel())));
+                        replaceFigure(figure,
+                                new LogDecorator(getModel(), (MyFigure) figure, ((FigureListener) getModel())));
                     }
                 }
             }

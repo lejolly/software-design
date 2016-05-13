@@ -3,6 +3,9 @@ package jdraw.test.joslee;
 import jdraw.framework.DrawView;
 import jdraw.framework.FigureHandle;
 import jdraw.joslee.figures.*;
+import jdraw.joslee.figures.handles.MyLineHandle;
+import jdraw.joslee.figures.handles.MyOvalHandle;
+import jdraw.joslee.figures.handles.MyRectHandle;
 import org.junit.Before;
 import org.junit.Test;
 

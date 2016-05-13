@@ -1,7 +1,8 @@
 package jdraw.joslee.figures.decorators;
 
-import jdraw.framework.Figure;
+import jdraw.framework.DrawModel;
 import jdraw.framework.FigureListener;
+import jdraw.joslee.figures.MyFigure;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -11,8 +12,8 @@ public class AnimationDecorator extends DecoratorFigure {
     private Executor executor = Executors.newSingleThreadExecutor();
     private boolean animate = false;
 
-    public AnimationDecorator(Figure figure, FigureListener figureListener) {
-        super(figure, figureListener);
+    public AnimationDecorator(DrawModel drawModel, MyFigure figure, FigureListener figureListener) {
+        super(drawModel, figure, figureListener);
         animate = true;
         startAnimation();
     }

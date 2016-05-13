@@ -1,15 +1,17 @@
 package jdraw.joslee.figures.decorators;
 
+import jdraw.framework.DrawModel;
 import jdraw.framework.Figure;
 import jdraw.framework.FigureHandle;
 import jdraw.framework.FigureListener;
+import jdraw.joslee.figures.MyFigure;
 
 import java.awt.*;
 
 public class LogDecorator extends DecoratorFigure {
 
-    public LogDecorator(Figure figure, FigureListener figureListener) {
-        super(figure, figureListener);
+    public LogDecorator(DrawModel drawModel, MyFigure figure, FigureListener figureListener) {
+        super(drawModel, figure, figureListener);
         System.out.println("Creating Log Decorated Figure");
     }
 

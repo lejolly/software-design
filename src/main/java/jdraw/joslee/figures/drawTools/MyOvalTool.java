@@ -3,16 +3,18 @@
  * All Rights Reserved.
  */
 
-package jdraw.joslee.figures;
+package jdraw.joslee.figures.drawTools;
 
 import jdraw.framework.DrawContext;
+import jdraw.joslee.figures.MyFigure;
+import jdraw.joslee.figures.MyOval;
 
 import javax.swing.*;
 
 /**
  * This tool defines a mode for drawing ovals.
  *
- * @see jdraw.framework.Figure
+ * @see jdraw.framework.MyFigure
  *
  * @author  Christoph Denzler, Joshua Lee
  */
@@ -24,7 +26,7 @@ public class MyOvalTool extends MyDrawTool {
 
     @Override
     MyFigure getNewFigure(int x, int y) {
-        return new MyOval(x, y, 0, 0);
+        return new MyOval(super.getModel(), x, y, 0, 0);
     }
 
     @Override

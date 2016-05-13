@@ -5,9 +5,9 @@
 
 package jdraw.framework;
 
-import java.awt.Cursor;
-import java.awt.Graphics;
-import java.awt.Point;
+import jdraw.joslee.figures.MyFigure;
+
+import java.awt.*;
 import java.awt.event.MouseEvent;
 
 /**
@@ -96,6 +96,6 @@ public interface FigureHandle {
 	 */
 	void stopInteraction(int x, int y, MouseEvent e, DrawView v);
 
-	void setOwner(Figure figure);
+	void setOwner(MyFigure figure);
 
 }

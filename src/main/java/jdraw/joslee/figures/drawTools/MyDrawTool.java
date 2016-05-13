@@ -1,8 +1,11 @@
-package jdraw.joslee.figures;
+package jdraw.joslee.figures.drawTools;
 
 import jdraw.framework.DrawContext;
+import jdraw.framework.DrawModel;
 import jdraw.framework.DrawTool;
 import jdraw.framework.DrawView;
+import jdraw.joslee.commands.AddFigureCommand;
+import jdraw.joslee.figures.MyFigure;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -10,7 +13,7 @@ import java.awt.event.MouseEvent;
 /**
  * This tool defines a mode for drawing figures.
  *
- * @see jdraw.framework.Figure
+ * @see jdraw.framework.MyFigure
  *
  * @author  Christoph Denzler, Joshua Lee
  */
@@ -94,6 +97,7 @@ abstract class MyDrawTool implements DrawTool {
         }
         anchor = new Point(x, y);
         newFigure = getNewFigure(x, y);
+        view.getModel().getDrawCommandHandler().addCommand(new AddFigureCommand(view.getModel(), newFigure));
         view.getModel().addFigure(newFigure);
     }
 
@@ -134,6 +138,10 @@ abstract class MyDrawTool implements DrawTool {
     @Override
     public Cursor getCursor() {
         return Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR);
+    }
+
+    public DrawModel getModel() {
+        return view.getModel();
     }
 
 }

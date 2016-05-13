@@ -1,17 +1,19 @@
-package jdraw.joslee.figures;
+package jdraw.joslee.figures.handles;
+
+import jdraw.joslee.figures.MyOval;
 
 import java.awt.*;
 
 /**
- * Handles for MyRect
+ * Handles for MyOval
  */
-public class MyRectHandle extends MyHandle {
+public class MyOvalHandle extends MyHandle {
 
-    public enum Type {NW, N, NE, E, SE, S, SW, W, CENTER}
+    public enum Type {N, E, S, W, CENTER}
 
     private Type type;
 
-    MyRectHandle(MyRect owner, Type type) {
+    public MyOvalHandle(MyOval owner, Type type) {
         super(owner);
         this.type = type;
         setLocation();
@@ -25,31 +27,16 @@ public class MyRectHandle extends MyHandle {
 
     void setLocation() {
         switch(this.type) {
-            case NW:
-                handleBox.setLocation(getOwnerLocation().x - (HANDLE_SIZE / 2), getOwnerLocation().y - (HANDLE_SIZE / 2));
-                break;
             case N:
                 handleBox.setLocation(getOwnerLocation().x + (getWidth() / 2) - (HANDLE_SIZE / 2),
-                        getOwnerLocation().y - (HANDLE_SIZE / 2));
-                break;
-            case NE:
-                handleBox.setLocation(getOwnerLocation().x + getWidth() - (HANDLE_SIZE / 2),
                         getOwnerLocation().y - (HANDLE_SIZE / 2));
                 break;
             case E:
                 handleBox.setLocation(getOwnerLocation().x + getWidth() - (HANDLE_SIZE / 2),
                         getOwnerLocation().y + (getHeight() / 2) - (HANDLE_SIZE / 2));
                 break;
-            case SE:
-                handleBox.setLocation(getOwnerLocation().x + getWidth() - (HANDLE_SIZE / 2),
-                        getOwnerLocation().y + getHeight() - (HANDLE_SIZE / 2));
-                break;
             case S:
                 handleBox.setLocation(getOwnerLocation().x + (getWidth() / 2) - (HANDLE_SIZE / 2),
-                        getOwnerLocation().y + getHeight() - (HANDLE_SIZE / 2));
-                break;
-            case SW:
-                handleBox.setLocation(getOwnerLocation().x - (HANDLE_SIZE / 2),
                         getOwnerLocation().y + getHeight() - (HANDLE_SIZE / 2));
                 break;
             case W:
@@ -65,33 +52,17 @@ public class MyRectHandle extends MyHandle {
 
     void changeNameAndCursor() {
         switch(this.type) {
-            case NW:
-                cursor = Cursor.getPredefinedCursor(Cursor.NW_RESIZE_CURSOR);
-                name = "North West";
-                break;
             case N:
                 cursor = Cursor.getPredefinedCursor(Cursor.N_RESIZE_CURSOR);
                 name = "North";
-                break;
-            case NE:
-                cursor = Cursor.getPredefinedCursor(Cursor.NE_RESIZE_CURSOR);
-                name = "North East";
                 break;
             case E:
                 cursor = Cursor.getPredefinedCursor(Cursor.E_RESIZE_CURSOR);
                 name = "East";
                 break;
-            case SE:
-                cursor = Cursor.getPredefinedCursor(Cursor.SE_RESIZE_CURSOR);
-                name = "South East";
-                break;
             case S:
                 cursor = Cursor.getPredefinedCursor(Cursor.S_RESIZE_CURSOR);
                 name = "South";
-                break;
-            case SW:
-                cursor = Cursor.getPredefinedCursor(Cursor.SW_RESIZE_CURSOR);
-                name = "South West";
                 break;
             case W:
                 cursor = Cursor.getPredefinedCursor(Cursor.W_RESIZE_CURSOR);
@@ -104,29 +75,33 @@ public class MyRectHandle extends MyHandle {
 
     void resize(int x, int y) {
         switch(this.type) {
-            case NW:
-                getOwner().setBounds(new Point(x, y), endPoint);
-                break;
             case N:
-                getOwner().setBounds(new Point(startPoint.x, y), endPoint);
-                break;
-            case NE:
-                getOwner().setBounds(new Point(x, endPoint.y), new Point(startPoint.x, y));
+                if (y < endPoint.y) {
+                    getOwner().setBounds(new Point(startPoint.x, y), endPoint);
+                } else {
+                    getOwner().setBounds(new Point(startPoint.x, endPoint.y), new Point(endPoint.x, y));
+                }
                 break;
             case E:
-                getOwner().setBounds(startPoint, new Point(x, endPoint.y));
-                break;
-            case SE:
-                getOwner().setBounds(startPoint, new Point(x, y));
+                if (x > startPoint.x) {
+                    getOwner().setBounds(startPoint, new Point(x, endPoint.y));
+                } else {
+                    getOwner().setBounds(new Point(x, startPoint.y), new Point(startPoint.x, endPoint.y));
+                }
                 break;
             case S:
-                getOwner().setBounds(startPoint, new Point(endPoint.x, y));
-                break;
-            case SW:
-                getOwner().setBounds(new Point(x, startPoint.y), new Point(endPoint.x, y));
+                if (y > startPoint.y) {
+                    getOwner().setBounds(startPoint, new Point(endPoint.x, y));
+                } else {
+                    getOwner().setBounds(new Point(startPoint.x, y), new Point(endPoint.x, startPoint.y));
+                }
                 break;
             case W:
-                getOwner().setBounds(new Point(x, startPoint.y), endPoint);
+                if (x < endPoint.x) {
+                    getOwner().setBounds(new Point(x, startPoint.y), endPoint);
+                } else {
+                    getOwner().setBounds(new Point(endPoint.x, startPoint.y), new Point(x, endPoint.y));
+                }
                 break;
             case CENTER:
                 break;

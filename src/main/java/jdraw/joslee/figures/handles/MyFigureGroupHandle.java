@@ -1,4 +1,6 @@
-package jdraw.joslee.figures;
+package jdraw.joslee.figures.handles;
+
+import jdraw.joslee.figures.MyFigureGroup;
 
 import java.awt.*;
 
@@ -12,7 +14,7 @@ public class MyFigureGroupHandle extends MyHandle {
 
     private Type type;
 
-    MyFigureGroupHandle(MyFigureGroup owner, Type type) {
+    public MyFigureGroupHandle(MyFigureGroup owner, Type type) {
         super(owner);
         this.type = type;
         setLocation();

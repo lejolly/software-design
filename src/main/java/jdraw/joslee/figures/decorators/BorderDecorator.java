@@ -1,8 +1,9 @@
 package jdraw.joslee.figures.decorators;
 
-import jdraw.framework.Figure;
+import jdraw.framework.DrawModel;
 import jdraw.framework.FigureListener;
-import jdraw.joslee.figures.MyHandle;
+import jdraw.joslee.figures.MyFigure;
+import jdraw.joslee.figures.handles.MyHandle;
 
 import java.awt.*;
 
@@ -10,8 +11,8 @@ public class BorderDecorator extends DecoratorFigure {
 
     private static final int BORDER_GAP = 5;
 
-    public BorderDecorator(Figure figure, FigureListener figureListener) {
-        super(figure, figureListener);
+    public BorderDecorator(DrawModel drawModel, MyFigure figure, FigureListener figureListener) {
+        super(drawModel, figure, figureListener);
     }
 
     @Override

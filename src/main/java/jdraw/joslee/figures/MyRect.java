@@ -5,7 +5,8 @@
 
 package jdraw.joslee.figures;
 
-import jdraw.framework.Figure;
+import jdraw.framework.DrawModel;
+import jdraw.joslee.figures.handles.MyRectHandle;
 
 import java.awt.*;
 
@@ -29,14 +30,17 @@ public class MyRect extends MyFigure {
      * @param w the rectangle's width
      * @param h the rectangle's height
      */
-    public MyRect(int x, int y, int w, int h) {
+    public MyRect(DrawModel drawModel, int x, int y, int w, int h) {
+        super(drawModel);
         rectangle = new Rectangle(x, y, w, h);
         createHandles();
     }
 
     private MyRect(MyRect myRect) {
+        super(myRect.getDrawModel());
         Rectangle bounds = myRect.getBounds(this);
         rectangle = new Rectangle(bounds.x, bounds.y, bounds.width, bounds.height);
+        createHandles();
     }
 
     /**
@@ -78,12 +82,12 @@ public class MyRect extends MyFigure {
     }
 
     @Override
-    public Figure clone() {
+    public MyFigure clone() {
         return new MyRect(this);
     }
 
     @Override
-    void createHandles() {
+    public void createHandles() {
         for (MyRectHandle.Type direction : MyRectHandle.Type.values()) {
             MyRectHandle myRectHandle = new MyRectHandle(this, direction);
             handles.add(myRectHandle);

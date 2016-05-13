@@ -1,19 +1,18 @@
 package jdraw.joslee.figures;
 
-import jdraw.framework.Figure;
-import jdraw.framework.FigureEvent;
-import jdraw.framework.FigureHandle;
-import jdraw.framework.FigureListener;
+import jdraw.framework.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class MyFigure implements Figure {
 
+    private final DrawModel drawModel;
     private List<FigureListener> listeners;
     protected List<FigureHandle> handles;
 
-    MyFigure() {
+    public MyFigure(DrawModel drawModel) {
+        this.drawModel = drawModel;
         listeners = new ArrayList<>();
         handles = new ArrayList<>();
     }
@@ -42,7 +41,7 @@ public abstract class MyFigure implements Figure {
 
     public abstract Figure clone();
 
-    abstract void createHandles();
+    public abstract void createHandles();
 
     /**
      * Returns a list of handles for this figure.
@@ -52,6 +51,10 @@ public abstract class MyFigure implements Figure {
     @Override
     public List<FigureHandle> getHandles() {
         return handles;
+    }
+
+    public DrawModel getDrawModel() {
+        return drawModel;
     }
 
 }

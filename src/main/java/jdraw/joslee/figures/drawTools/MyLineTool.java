@@ -3,16 +3,18 @@
  * All Rights Reserved.
  */
 
-package jdraw.joslee.figures;
+package jdraw.joslee.figures.drawTools;
 
 import jdraw.framework.DrawContext;
+import jdraw.joslee.figures.MyFigure;
+import jdraw.joslee.figures.MyLine;
 
 import javax.swing.*;
 
 /**
  * This tool defines a mode for drawing lines.
  *
- * @see jdraw.framework.Figure
+ * @see jdraw.framework.MyFigure
  *
  * @author  Christoph Denzler, Joshua Lee
  */
@@ -24,7 +26,7 @@ public class MyLineTool extends MyDrawTool {
 
     @Override
     MyFigure getNewFigure(int x, int y) {
-        return new MyLine(x, y, x, y);
+        return new MyLine(super.getModel(), x, y, x, y);
     }
 
     @Override

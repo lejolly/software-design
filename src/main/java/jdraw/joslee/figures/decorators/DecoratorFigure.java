@@ -1,20 +1,19 @@
 package jdraw.joslee.figures.decorators;
 
-import jdraw.framework.Figure;
-import jdraw.framework.FigureEvent;
-import jdraw.framework.FigureHandle;
-import jdraw.framework.FigureListener;
+import jdraw.framework.*;
+import jdraw.joslee.figures.MyFigure;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class DecoratorFigure implements Figure {
+public abstract class DecoratorFigure extends MyFigure {
 
-    private final Figure innerFigure;
+    private final MyFigure innerFigure;
     private final FigureListener figureListener;
 
-    public DecoratorFigure(Figure figure, FigureListener figureListener) {
+    public DecoratorFigure(DrawModel drawModel, MyFigure figure, FigureListener figureListener) {
+        super(drawModel);
         this.innerFigure = figure;
         this.figureListener = figureListener;
         for (FigureHandle handle : new ArrayList<>(this.innerFigure.getHandles())) {
@@ -83,5 +82,8 @@ public abstract class DecoratorFigure implements Figure {
         }
         return innerFigure;
     }
+
+    @Override
+    public void createHandles() {}
 
 }

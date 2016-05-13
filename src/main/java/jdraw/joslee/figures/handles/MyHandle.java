@@ -1,6 +1,8 @@
-package jdraw.joslee.figures;
+package jdraw.joslee.figures.handles;
 
 import jdraw.framework.*;
+import jdraw.joslee.commands.ResizeFigureCommand;
+import jdraw.joslee.figures.MyFigure;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -9,20 +11,21 @@ public abstract class MyHandle implements FigureHandle, FigureListener {
 
     static final int HANDLE_SIZE = 6;
 
-    private Figure owner;
+    private MyFigure owner;
+    private Rectangle originalBounds;
     String name;
     Cursor cursor;
     Point startPoint;
     Point endPoint;
     Rectangle handleBox;
 
-    MyHandle(Figure owner) {
+    MyHandle(MyFigure owner) {
         this.owner = owner;
         handleBox = new Rectangle(0, 0, HANDLE_SIZE, HANDLE_SIZE);
     }
 
     @Override
-    public Figure getOwner() {
+    public MyFigure getOwner() {
         return owner;
     }
 
@@ -55,9 +58,9 @@ public abstract class MyHandle implements FigureHandle, FigureListener {
 
     @Override
     public void startInteraction(int x, int y, MouseEvent e, DrawView v) {
-        Rectangle bounds = owner.getBounds(this);
-        startPoint = new Point(bounds.x, bounds.y);
-        endPoint = new Point(bounds.x + bounds.width, bounds.y + bounds.height);
+        originalBounds = owner.getBounds(this);
+        startPoint = new Point(originalBounds.x, originalBounds.y);
+        endPoint = new Point(originalBounds.x + originalBounds.width, originalBounds.y + originalBounds.height);
     }
 
     @Override
@@ -70,6 +73,8 @@ public abstract class MyHandle implements FigureHandle, FigureListener {
     @Override
     public void stopInteraction(int x, int y, MouseEvent e, DrawView v) {
         v.getDrawContext().showStatusText("Selection mode");
+        owner.getDrawModel().getDrawCommandHandler().addCommand(
+                new ResizeFigureCommand(owner, originalBounds, owner.getBounds(this)));
     }
 
     int getWidth() {
@@ -87,7 +92,7 @@ public abstract class MyHandle implements FigureHandle, FigureListener {
     abstract void resize(int x, int y);
 
     @Override
-    public void setOwner(Figure figure) {
+    public void setOwner(MyFigure figure) {
         this.owner = figure;
     }
 

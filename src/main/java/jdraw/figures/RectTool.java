@@ -44,7 +44,7 @@ public class RectTool implements DrawTool {
 	 * mouse down - mouse drag - mouse up cycle) this variable refers
 	 * to the new rectangle that is inserted.
 	 */
-	private MyRect newRect = null;
+	private Rect newRect = null;
 
 	/**
 	 * Temporary variable.
@@ -95,7 +95,7 @@ public class RectTool implements DrawTool {
 			throw new IllegalStateException();
 		}
 		anchor = new Point(x, y);
-		newRect = new MyRect(x, y, 0, 0);
+		newRect = new Rect(x, y, 0, 0);
 		view.getModel().addFigure(newRect);
 	}
 

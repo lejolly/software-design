@@ -5,7 +5,8 @@
 
 package jdraw.joslee.figures;
 
-import jdraw.framework.Figure;
+import jdraw.framework.DrawModel;
+import jdraw.joslee.figures.handles.MyOvalHandle;
 
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
@@ -32,13 +33,17 @@ public class MyOval extends MyFigure {
      * @param w the width of the framing rectangle
      * @param h the height of the framing rectangle
      */
-    public MyOval(int x, int y, int w, int h) {
+    public MyOval(DrawModel drawModel, int x, int y, int w, int h) {
+        super(drawModel);
         oval = new Ellipse2D.Double(x, y, w, h);
+        createHandles();
     }
 
     private MyOval(MyOval myOval) {
+        super(myOval.getDrawModel());
         Rectangle bounds = myOval.getBounds(this);
         oval = new Ellipse2D.Double(bounds.x, bounds.y, bounds.width, bounds.height);
+        createHandles();
     }
 
     /**
@@ -80,12 +85,12 @@ public class MyOval extends MyFigure {
     }
 
     @Override
-    public Figure clone() {
+    public MyFigure clone() {
         return new MyOval(this);
     }
 
     @Override
-    void createHandles() {
+    public void createHandles() {
         for (MyOvalHandle.Type direction : MyOvalHandle.Type.values()) {
             MyOvalHandle myOvalHandle = new MyOvalHandle(this, direction);
             handles.add(myOvalHandle);

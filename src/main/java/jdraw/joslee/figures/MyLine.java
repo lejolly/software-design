@@ -5,7 +5,8 @@
 
 package jdraw.joslee.figures;
 
-import jdraw.framework.Figure;
+import jdraw.framework.DrawModel;
+import jdraw.joslee.figures.handles.MyLineHandle;
 
 import java.awt.*;
 import java.awt.geom.Line2D;
@@ -32,14 +33,18 @@ public class MyLine extends MyFigure {
      * @param x2 the X coordinate of the end point
      * @param y2 the Y coordinate of the end point
      */
-    public MyLine(int x1, int y1, int x2, int y2) {
+    public MyLine(DrawModel drawModel, int x1, int y1, int x2, int y2) {
+        super(drawModel);
         line = new Line2D.Double(x1, y1, x2, y2);
+        createHandles();
     }
 
     private MyLine(MyLine myLine) {
+        super(myLine.getDrawModel());
         Point p1 = myLine.getP1();
         Point p2 = myLine.getP2();
         line = new Line2D.Double(p1.x, p1.y, p2.x, p2.y);
+        createHandles();
     }
 
     /**
@@ -79,12 +84,12 @@ public class MyLine extends MyFigure {
     }
 
     @Override
-    public Figure clone() {
+    public MyFigure clone() {
         return new MyLine(this);
     }
 
     @Override
-    void createHandles() {
+    public void createHandles() {
         for (MyLineHandle.Type direction : MyLineHandle.Type.values()) {
             MyLineHandle myLineHandle = new MyLineHandle(this, direction);
             handles.add(myLineHandle);
