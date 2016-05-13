@@ -2,6 +2,7 @@ package jdraw.joslee;
 
 import jdraw.framework.DrawCommand;
 import jdraw.framework.DrawCommandHandler;
+import jdraw.joslee.commands.MoveFigureCommand;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +19,18 @@ public class MyDrawCommandHandler implements DrawCommandHandler {
 
     @Override
     public void addCommand(DrawCommand cmd) {
-        undo.add(0, cmd);
+        // compress movement commands on the same figure
+        if (cmd instanceof MoveFigureCommand
+                && !undo.isEmpty()
+                && undo.get(0) instanceof MoveFigureCommand
+                && ((MoveFigureCommand) cmd).getFigure().equals(((MoveFigureCommand) undo.get(0)).getFigure())) {
+            MoveFigureCommand oldCommand = (MoveFigureCommand) undo.get(0);
+            undo.remove(0);
+            ((MoveFigureCommand) cmd).compress(oldCommand);
+            undo.add(0, cmd);
+        } else {
+            undo.add(0, cmd);
+        }
         redo.clear();
     }
 

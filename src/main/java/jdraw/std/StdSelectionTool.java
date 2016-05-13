@@ -6,6 +6,7 @@
 package jdraw.std;
 
 import jdraw.framework.*;
+import jdraw.joslee.commands.MoveFigureCommand;
 
 import javax.swing.*;
 import java.awt.*;
@@ -235,7 +236,7 @@ public class StdSelectionTool implements DrawTool {
 
 		for (Figure f : view.getSelection()) {
 			f.move(k, l);
-			view.getModel().getDrawCommandHandler().addCommand(new MoveCommand(f, k, l));			
+			view.getModel().getDrawCommandHandler().addCommand(new MoveFigureCommand(f, k, l));
 		}
 
 		tempX = i;

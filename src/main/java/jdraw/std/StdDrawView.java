@@ -6,6 +6,7 @@
 package jdraw.std;
 
 import jdraw.framework.*;
+import jdraw.joslee.commands.MoveFigureCommand;
 import jdraw.joslee.pointConstrainers.MyPointConstrainerStub;
 
 import javax.swing.*;
@@ -327,7 +328,7 @@ public final class StdDrawView extends JComponent implements DrawView {
 				for (Figure figure : selection) {
 					figure.move(dx, dy);
 					model.getDrawCommandHandler().addCommand(
-							new MoveCommand(figure, dx, dy));
+							new MoveFigureCommand(figure, dx, dy));
 				}
 			}
 		}
