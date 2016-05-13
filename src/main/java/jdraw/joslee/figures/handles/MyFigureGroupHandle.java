@@ -29,7 +29,8 @@ public class MyFigureGroupHandle extends MyHandle {
     void setLocation() {
         switch(this.type) {
             case NW:
-                handleBox.setLocation(getOwnerLocation().x - (HANDLE_SIZE / 2), getOwnerLocation().y - (HANDLE_SIZE / 2));
+                handleBox.setLocation(getOwnerLocation().x - (HANDLE_SIZE / 2),
+                        getOwnerLocation().y - (HANDLE_SIZE / 2));
                 break;
             case N:
                 handleBox.setLocation(getOwnerLocation().x + (getWidth() / 2) - (HANDLE_SIZE / 2),

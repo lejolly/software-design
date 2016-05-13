@@ -19,12 +19,13 @@ public class ResizeFigureCommand implements DrawCommand {
 
     @Override
     public void redo() {
-
+        figure.setBounds(newBounds.getLocation(), new Point((int) newBounds.getMaxX(), (int) newBounds.getMaxY()));
     }
 
     @Override
     public void undo() {
-
+        figure.setBounds(originalBounds.getLocation(),
+                new Point((int) originalBounds.getMaxX(), (int) originalBounds.getMaxY()));
     }
 
 }
