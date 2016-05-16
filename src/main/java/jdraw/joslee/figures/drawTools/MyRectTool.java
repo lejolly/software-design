@@ -14,7 +14,7 @@ import javax.swing.*;
 /**
  * This tool defines a mode for drawing rectangles.
  *
- * @see jdraw.framework.MyFigure
+ * @see jdraw.framework.Figure
  *
  * @author  Christoph Denzler, Joshua Lee
  */

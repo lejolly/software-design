@@ -13,7 +13,7 @@ import java.awt.event.MouseEvent;
 /**
  * This tool defines a mode for drawing figures.
  *
- * @see jdraw.framework.MyFigure
+ * @see jdraw.framework.Figure
  *
  * @author  Christoph Denzler, Joshua Lee
  */
@@ -113,9 +113,11 @@ abstract class MyDrawTool implements DrawTool {
      * @see jdraw.framework.DrawTool#mouseDrag(int, int, MouseEvent)
      */
     public void mouseDrag(int x, int y, MouseEvent e) {
-        newFigure.setBounds(anchor, new Point(x, y));
-        java.awt.Rectangle r = newFigure.getBounds(this);
-        this.context.showStatusText("w: " + r.width + ", h: " + r.height);
+        if (newFigure != null) {
+            newFigure.setBounds(anchor, new Point(x, y));
+            java.awt.Rectangle r = newFigure.getBounds(this);
+            this.context.showStatusText("w: " + r.width + ", h: " + r.height);
+        }
     }
 
     /**

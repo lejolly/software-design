@@ -16,21 +16,94 @@ import java.util.stream.Collectors;
  */
 public class MySnapPointConstrainer implements PointConstrainer {
 
-    private static final int SNAP_RANGE = 10;
+    private static final int SNAP_RANGE = 25;
 
     private DrawView drawView;
+    private boolean isDragging;
+    private Point startPoint;
 
     public MySnapPointConstrainer(DrawView drawView) {
         this.drawView = drawView;
+        isDragging = false;
     }
 
     @Override
     public Point constrainPoint(Point p) {
-        if (drawView.getSelection().size() == 1) {
-            return getClosestOtherHandle(p, drawView.getSelection().get(0));
-        } else {
-            return p;
+        // currently only limited to dragging a single figure
+        if (isDragging && drawView.getSelection().size() == 1) {
+            if (startPoint == null) {
+                startPoint = getClosestSourceHandle(p, drawView.getSelection().get(0));
+                return startPoint;
+            }
+            return getSnapPoint(p, drawView.getSelection().get(0));
         }
+        return p;
+    }
+
+    private Point getClosestSourceHandle(Point mouseLocation, Figure sourceFigure) {
+        ArrayList<FigureHandle> handles = new ArrayList<>(sourceFigure.getHandles());
+        Collections.sort(handles, ((o1, o2) ->
+                getDistance(o1.getLocation(), mouseLocation)
+                        .compareTo(getDistance(o2.getLocation(), mouseLocation))));
+        return new Point(handles.get(0).getLocation().x, handles.get(0).getLocation().y);
+    }
+
+    private Point getSnapPoint(Point mouseLocation, Figure sourceFigure) {
+        // generate all combinations
+        ArrayList<Pair<FigureHandle, FigureHandle>> combinations = new ArrayList<>();
+        sourceFigure.getHandles().forEach(sourceHandle -> combinations.addAll(
+                getOtherHandles(sourceFigure).stream()
+                        .map(targetHandle -> new Pair<>(sourceHandle, targetHandle))
+                        .collect(Collectors.toList())));
+        // filter combinations
+        ArrayList<Pair<FigureHandle, FigureHandle>> filteredCombinations = new ArrayList<>();
+        combinations.stream().filter(combination -> pointFilter(
+                mouseLocation, combination.getKey().getLocation(), combination.getValue().getLocation()))
+                .forEach(filteredCombinations::add);
+        // sort combinations
+        if (!filteredCombinations.isEmpty()) {
+            // sort by closest distance between source point and target point
+            Collections.sort(filteredCombinations, ((o1, o2) ->
+                    getDistance(o1.getKey().getLocation(), o1.getValue().getLocation())
+                            .compareTo(getDistance(o2.getKey().getLocation(), o2.getValue().getLocation()))));
+            return filteredCombinations.get(0).getValue().getLocation();
+        }
+        return mouseLocation;
+    }
+
+    private boolean pointFilter(Point mouseLocation, Point sourcePoint, Point targetPoint) {
+        // are points close and distance is more than 0
+        return getDistance(sourcePoint, targetPoint) <= SNAP_RANGE &&
+                getDistance(mouseLocation, targetPoint) <= SNAP_RANGE &&
+                getDistance(sourcePoint, targetPoint) > 0 &&
+                getDistance(mouseLocation, targetPoint) > 0;
+    }
+
+    private Double getDistance(Point a, Point b) {
+        return Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2));
+    }
+
+    private ArrayList<FigureHandle> getOtherHandles(Figure sourceFigure) {
+        // returns all handles except from the source figure
+        ArrayList<FigureHandle> handles = new ArrayList<>();
+        ArrayList<Figure> figures = new ArrayList<>();
+        drawView.getModel().getFigures().forEach(figures::add);
+        figures.remove(sourceFigure);
+        figures.forEach(figure -> figure.getHandles().forEach(handles::add));
+        return handles;
+    }
+
+    @Override
+    public void mouseDown() {
+        // start of drag
+        isDragging = true;
+    }
+
+    @Override
+    public void mouseUp() {
+        // end of drag, time to reset stuff
+        isDragging = false;
+        startPoint = null;
     }
 
     @SuppressWarnings("Duplicates")
@@ -79,6 +152,7 @@ public class MySnapPointConstrainer implements PointConstrainer {
                     potentialHandles.addAll(rightHandles);
                     if (!potentialHandles.isEmpty()) {
                         Collections.sort(potentialHandles, (o1, o2) -> Integer.compare(o1.getKey(), o2.getKey()));
+                        System.out.println("snap");
                         return potentialHandles.get(0).getKey();
                     }
                 }
@@ -88,11 +162,9 @@ public class MySnapPointConstrainer implements PointConstrainer {
     }
 
     private boolean isCloseToXBoundaries(FigureHandle handle, Figure figure) {
-        return (Math.abs(handle.getLocation().x - figure.getBounds(this).x) <= SNAP_RANGE
-                && Math.abs(handle.getLocation().x - figure.getBounds(this).x) > 0)||
-                (Math.abs(handle.getLocation().x - figure.getBounds(this).x - figure.getBounds(this).width)
-                        <= SNAP_RANGE
-                && Math.abs(handle.getLocation().x - figure.getBounds(this).x - figure.getBounds(this).width) > 0);
+        int leftDistance = Math.abs(handle.getLocation().x - figure.getBounds(this).x);
+        int rightDistance = Math.abs(handle.getLocation().x - figure.getBounds(this).x - figure.getBounds(this).width);
+        return (leftDistance <= SNAP_RANGE && leftDistance > 0) || (rightDistance <= SNAP_RANGE && rightDistance > 0);
     }
 
     private boolean isWithinYBoundaries(FigureHandle handle, Figure figure) {
@@ -155,11 +227,10 @@ public class MySnapPointConstrainer implements PointConstrainer {
     }
 
     private boolean isCloseToYBoundaries(FigureHandle handle, Figure figure) {
-        return (Math.abs(handle.getLocation().y - figure.getBounds(this).y) <= SNAP_RANGE
-                && Math.abs(handle.getLocation().y - figure.getBounds(this).y) > 0)||
-                (Math.abs(handle.getLocation().y - figure.getBounds(this).y - figure.getBounds(this).height)
-                        <= SNAP_RANGE
-                        && Math.abs(handle.getLocation().y - figure.getBounds(this).y - figure.getBounds(this).height) > 0);
+        int topDistance = Math.abs(handle.getLocation().y - figure.getBounds(this).y);
+        int bottomDistance =
+                Math.abs(handle.getLocation().y - figure.getBounds(this).y - figure.getBounds(this).height);
+        return (topDistance <= SNAP_RANGE && topDistance > 0) || (bottomDistance <= SNAP_RANGE && bottomDistance > 0);
     }
 
     private boolean isWithinXBoundaries(FigureHandle handle, Figure figure) {
@@ -168,60 +239,9 @@ public class MySnapPointConstrainer implements PointConstrainer {
     }
 
     @Override
-    public void activate() {
-
-    }
+    public void activate() {}
 
     @Override
-    public void deactivate() {
-
-    }
-
-    @Override
-    public void mouseDown() {
-
-    }
-
-    @Override
-    public void mouseUp() {
-
-    }
-
-    private Point getClosestSourceHandle(Point mouseLocation, Figure sourceFigure) {
-        ArrayList<FigureHandle> handles = new ArrayList<>(sourceFigure.getHandles());
-        Collections.sort(handles, (o1, o2) ->
-                getDistance(o1.getLocation(), mouseLocation).compareTo(getDistance(o2.getLocation(), mouseLocation)));
-        return handles.get(0).getLocation();
-    }
-
-    // TODO fix snap to handle when using mouse, currently it snaps to the mouse cursor and not the handle
-    @SuppressWarnings("unchecked")
-    private Point getClosestOtherHandle(Point mouseLocation, Figure sourceFigure) {
-        Point closestSourceHandle = getClosestSourceHandle(mouseLocation, sourceFigure);
-        ArrayList<FigureHandle> handles = getOtherHandles(sourceFigure);
-        Collections.sort(handles, (o1, o2) ->
-                getDistance(o1.getLocation(), closestSourceHandle)
-                        .compareTo(getDistance(o2.getLocation(), closestSourceHandle)));
-        if (handles.isEmpty() ||
-                getDistance(handles.get(0).getLocation(), mouseLocation) > SNAP_RANGE) {
-            return mouseLocation;
-        } else {
-            return handles.get(0).getLocation();
-        }
-    }
-
-    private Double getDistance(Point a, Point b) {
-        return Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2));
-    }
-
-    private ArrayList<FigureHandle> getOtherHandles(Figure sourceFigure) {
-        // returns all handles except from the source figure
-        ArrayList<FigureHandle> handles = new ArrayList<>();
-        ArrayList<Figure> figures = new ArrayList<>();
-        drawView.getModel().getFigures().forEach(figures::add);
-        figures.remove(sourceFigure);
-        figures.forEach(figure -> figure.getHandles().forEach(handles::add));
-        return handles;
-    }
+    public void deactivate() {}
 
 }
