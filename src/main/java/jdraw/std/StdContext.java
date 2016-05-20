@@ -290,7 +290,7 @@ public class StdContext extends AbstractContext {
             if (!figures.isEmpty()) {
                 for (Figure figure : figures) {
                     if (figure instanceof BundleDecorator) {
-                        replaceFigure(figure, ((DecoratorFigure) figure).getInnerFigure());
+                        replaceFigure(figure, ((DecoratorFigure) figure).getInnerFigure(true));
                     } else {
                         replaceFigure(figure,
                                 new BundleDecorator(getModel(), (MyFigure) figure, ((FigureListener) getModel())));
@@ -305,7 +305,7 @@ public class StdContext extends AbstractContext {
                 for (Figure figure : figures) {
                     if (figure instanceof AnimationDecorator) {
                         ((AnimationDecorator) figure).stopAnimation();
-                        replaceFigure(figure, ((DecoratorFigure) figure).getInnerFigure());
+                        replaceFigure(figure, ((DecoratorFigure) figure).getInnerFigure(true));
                     } else {
                         replaceFigure(figure,
                                 new AnimationDecorator(getModel(), (MyFigure) figure, ((FigureListener) getModel())));
@@ -319,7 +319,7 @@ public class StdContext extends AbstractContext {
             if (!figures.isEmpty()) {
                 for (Figure figure : figures) {
                     if (figure instanceof LogDecorator) {
-                        replaceFigure(figure, ((DecoratorFigure) figure).getInnerFigure());
+                        replaceFigure(figure, ((DecoratorFigure) figure).getInnerFigure(true));
                     } else {
                         replaceFigure(figure,
                                 new LogDecorator(getModel(), (MyFigure) figure, ((FigureListener) getModel())));

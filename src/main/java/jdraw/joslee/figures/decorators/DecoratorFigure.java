@@ -73,12 +73,11 @@ public abstract class DecoratorFigure extends MyFigure {
         innerFigure.notifyListeners();
     }
 
-    public Figure getInnerFigure() {
-        // the only time we use this is to get the inner figure
-        // out to remove the decorator, so we set the owner of the
-        // handles back to the original figure
-        for (FigureHandle handle : new ArrayList<>(innerFigure.getHandles())) {
-            handle.setOwner(innerFigure);
+    public Figure getInnerFigure(boolean setOwner) {
+        if (setOwner) {
+            for (FigureHandle handle : new ArrayList<>(innerFigure.getHandles())) {
+                handle.setOwner(innerFigure);
+            }
         }
         return innerFigure;
     }

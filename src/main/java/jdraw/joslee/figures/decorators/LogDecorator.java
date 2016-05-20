@@ -70,9 +70,9 @@ public class LogDecorator extends DecoratorFigure {
     }
 
     @Override
-    public Figure getInnerFigure() {
+    public Figure getInnerFigure(boolean setOwner) {
         System.out.println("LogDecorator: Getting inner figure");
-        return super.getInnerFigure();
+        return super.getInnerFigure(setOwner);
     }
 
 }

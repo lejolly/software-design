@@ -3,7 +3,6 @@ package jdraw.joslee.figures.decorators;
 import jdraw.framework.DrawModel;
 import jdraw.framework.FigureListener;
 import jdraw.joslee.figures.MyFigure;
-import jdraw.joslee.figures.handles.MyHandle;
 
 import java.awt.*;
 
@@ -15,20 +14,15 @@ public class BorderDecorator extends DecoratorFigure {
         super(drawModel, figure, figureListener);
     }
 
-//    @Override
-    public Rectangle getBounds(Object caller) {
-        Rectangle bounds = super.getBounds();
-        if (caller instanceof MyHandle) {
-            return bounds;
-        } else {
-            return new Rectangle(bounds.x - BORDER_GAP, bounds.y - BORDER_GAP,
-                    bounds.width + 2 * BORDER_GAP, bounds.height + 2 * BORDER_GAP);
-        }
-    }
-
     @Override
     public void draw(Graphics g) {
-        Rectangle bounds = getBounds(this);
+        Rectangle bounds;
+        if (getInnerFigure(false) instanceof BorderDecorator) {
+            bounds = getBorderBounds();
+        } else {
+            bounds = new Rectangle(getBounds().x - BORDER_GAP, getBounds().y - BORDER_GAP,
+                    getBounds().width + 2 * BORDER_GAP, getBounds().height + 2 * BORDER_GAP);
+        }
         int x1 = bounds.x ;
         int y1 = bounds.y;
         int x2 = bounds.x + bounds.width;
@@ -44,7 +38,18 @@ public class BorderDecorator extends DecoratorFigure {
 
     @Override
     public Rectangle getBounds() {
-        return null;
+        return getInnerFigure(false).getBounds();
+    }
+
+    public Rectangle getBorderBounds() {
+        if (getInnerFigure(false) instanceof BorderDecorator) {
+            Rectangle bounds = ((BorderDecorator) getInnerFigure(false)).getBorderBounds();
+            return new Rectangle(bounds.x - BORDER_GAP, bounds.y - BORDER_GAP,
+                    bounds.width + 2 * BORDER_GAP, bounds.height + 2 * BORDER_GAP);
+        } else {
+            return new Rectangle(getBounds().x - BORDER_GAP, getBounds().y - BORDER_GAP,
+                    getBounds().width + 2 * BORDER_GAP, getBounds().height + 2 * BORDER_GAP);
+        }
     }
 
 }
