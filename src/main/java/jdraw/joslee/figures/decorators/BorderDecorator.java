@@ -15,9 +15,9 @@ public class BorderDecorator extends DecoratorFigure {
         super(drawModel, figure, figureListener);
     }
 
-    @Override
+//    @Override
     public Rectangle getBounds(Object caller) {
-        Rectangle bounds = super.getBounds(caller);
+        Rectangle bounds = super.getBounds();
         if (caller instanceof MyHandle) {
             return bounds;
         } else {
@@ -40,6 +40,11 @@ public class BorderDecorator extends DecoratorFigure {
         g.drawLine(x2, y1, x2, y2);
         g.drawLine(x1, y2, x2, y2);
         super.draw(g);
+    }
+
+    @Override
+    public Rectangle getBounds() {
+        return null;
     }
 
 }

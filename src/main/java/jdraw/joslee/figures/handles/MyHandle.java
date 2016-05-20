@@ -30,7 +30,7 @@ public abstract class MyHandle implements FigureHandle, FigureListener {
     }
 
     public Point getOwnerLocation() {
-        return owner.getBounds(this).getLocation();
+        return owner.getBounds().getLocation();
     }
 
     @Override
@@ -58,7 +58,7 @@ public abstract class MyHandle implements FigureHandle, FigureListener {
 
     @Override
     public void startInteraction(int x, int y, MouseEvent e, DrawView v) {
-        originalBounds = owner.getBounds(this);
+        originalBounds = owner.getBounds();
         startPoint = new Point(originalBounds.x, originalBounds.y);
         endPoint = new Point(originalBounds.x + originalBounds.width, originalBounds.y + originalBounds.height);
     }
@@ -74,15 +74,15 @@ public abstract class MyHandle implements FigureHandle, FigureListener {
     public void stopInteraction(int x, int y, MouseEvent e, DrawView v) {
         v.getDrawContext().showStatusText("Selection mode");
         owner.getDrawModel().getDrawCommandHandler().addCommand(
-                new ResizeFigureCommand(owner, originalBounds, owner.getBounds(this)));
+                new ResizeFigureCommand(owner, originalBounds, owner.getBounds()));
     }
 
     int getWidth() {
-        return owner.getBounds(this).width;
+        return owner.getBounds().width;
     }
 
     int getHeight() {
-        return owner.getBounds(this).height;
+        return owner.getBounds().height;
     }
 
     abstract void setLocation();

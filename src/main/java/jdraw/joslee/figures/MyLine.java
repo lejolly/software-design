@@ -79,7 +79,7 @@ public class MyLine extends MyFigure {
     }
 
     @Override
-    public Rectangle getBounds(Object caller) {
+    public Rectangle getBounds() {
         return line.getBounds();
     }
 

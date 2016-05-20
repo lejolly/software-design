@@ -9,9 +9,6 @@ import jdraw.framework.*;
 import jdraw.joslee.figures.MyFigure;
 import jdraw.joslee.figures.MyFigureGroup;
 import jdraw.joslee.figures.decorators.*;
-import jdraw.joslee.figures.drawTools.MyLineTool;
-import jdraw.joslee.figures.drawTools.MyOvalTool;
-import jdraw.joslee.figures.drawTools.MyRectTool;
 import jdraw.joslee.pointConstrainers.My5PointConstrainer;
 import jdraw.joslee.pointConstrainers.MyPointConstrainerStub;
 import jdraw.joslee.pointConstrainers.MySnapPointConstrainer;
@@ -366,13 +363,23 @@ public class StdContext extends AbstractContext {
 
 	@Override
 	protected void doRegisterDrawTools() {
-		// TODO Add new figure tools here
-		DrawTool rectangleTool = new MyRectTool(this);
-		DrawTool lineTool = new MyLineTool(this);
-        DrawTool ovalTool = new MyOvalTool(this);
-		addTool(rectangleTool);
-        addTool(lineTool);
-        addTool(ovalTool);
+//		// TODO Add new figure tools here
+//		DrawTool rectangleTool = new MyRectTool(this);
+//		DrawTool lineTool = new MyLineTool(this);
+//        DrawTool ovalTool = new MyOvalTool(this);
+//		addTool(rectangleTool);
+//        addTool(lineTool);
+//        addTool(ovalTool);
+        if (!getToolFactories().isEmpty()) {
+            for (DrawToolFactory drawToolFactory : getToolFactories()) {
+                if (drawToolFactory != null) {
+                    DrawTool drawTool = drawToolFactory.createTool(this);
+                    addTool(drawTool);
+                } else {
+                    addTool(null);
+                }
+            }
+        }
 	}
 
 	/**

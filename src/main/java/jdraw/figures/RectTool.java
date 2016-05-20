@@ -8,7 +8,6 @@ package jdraw.figures;
 import jdraw.framework.DrawContext;
 import jdraw.framework.DrawTool;
 import jdraw.framework.DrawView;
-import jdraw.joslee.figures.MyRect;
 
 import javax.swing.*;
 import java.awt.*;
@@ -112,7 +111,7 @@ public class RectTool implements DrawTool {
 	 */
 	public void mouseDrag(int x, int y, MouseEvent e) {
 		newRect.setBounds(anchor, new Point(x, y));
-		java.awt.Rectangle r = newRect.getBounds(this);
+		java.awt.Rectangle r = newRect.getBounds();
 		this.context.showStatusText("w: " + r.width + ", h: " + r.height);
 	}
 

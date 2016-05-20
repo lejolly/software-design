@@ -67,7 +67,7 @@ public interface Figure extends Serializable, Cloneable {
 	 * 
 	 * @return bounds of the figure
 	 */
-	Rectangle getBounds(Object caller);
+	Rectangle getBounds();
 
 	/**
 	 * Returns a list of handles. Handles are used to manipulate a figure. If

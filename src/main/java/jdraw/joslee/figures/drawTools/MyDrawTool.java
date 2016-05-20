@@ -7,6 +7,7 @@ import jdraw.framework.DrawView;
 import jdraw.joslee.commands.AddFigureCommand;
 import jdraw.joslee.figures.MyFigure;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 
@@ -49,13 +50,18 @@ abstract class MyDrawTool implements DrawTool {
      */
     private Point anchor = null;
 
+    private String name;
+    private String icon;
+
     /**
      * Create a new tool for the given context.
      * @param context a context to use this tool in.
      */
-    MyDrawTool(DrawContext context) {
+    MyDrawTool(DrawContext context, String name, String icon) {
         this.context = context;
         this.view = context.getView();
+        this.name = name;
+        this.icon = icon;
     }
 
     /**
@@ -115,7 +121,7 @@ abstract class MyDrawTool implements DrawTool {
     public void mouseDrag(int x, int y, MouseEvent e) {
         if (newFigure != null) {
             newFigure.setBounds(anchor, new Point(x, y));
-            java.awt.Rectangle r = newFigure.getBounds(this);
+            java.awt.Rectangle r = newFigure.getBounds();
             this.context.showStatusText("w: " + r.width + ", h: " + r.height);
         }
     }
@@ -144,6 +150,16 @@ abstract class MyDrawTool implements DrawTool {
 
     public DrawModel getModel() {
         return view.getModel();
+    }
+
+    @Override
+    public Icon getIcon() {
+        return new ImageIcon(getClass().getResource(IMAGES + icon));
+    }
+
+    @Override
+    public String getName() {
+        return name;
     }
 
 }

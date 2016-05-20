@@ -34,9 +34,9 @@ public class LogDecorator extends DecoratorFigure {
     }
 
     @Override
-    public Rectangle getBounds(Object caller) {
+    public Rectangle getBounds() {
         System.out.println("LogDecorator: Getting bounds of figure");
-        return super.getBounds(caller);
+        return super.getBounds();
     }
 
     @Override

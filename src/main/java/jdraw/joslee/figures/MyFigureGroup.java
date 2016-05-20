@@ -78,13 +78,13 @@ public class MyFigureGroup extends MyFigure implements FigureGroup {
     }
 
     @Override
-    public Rectangle getBounds(Object caller) {
+    public Rectangle getBounds() {
         Rectangle bounds = null;
         for (Figure figure : figures) {
             if (bounds == null) {
-                bounds = figure.getBounds(this);
+                bounds = figure.getBounds();
             } else {
-                bounds = bounds.union(figure.getBounds(this));
+                bounds = bounds.union(figure.getBounds());
             }
         }
         return bounds;

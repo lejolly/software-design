@@ -66,7 +66,7 @@ public class Rect implements Figure {
     }
 
     @Override
-    public Rectangle getBounds(Object caller) {
+    public Rectangle getBounds() {
         return rectangle.getBounds();
     }
 

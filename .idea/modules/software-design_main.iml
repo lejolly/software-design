@@ -24,5 +24,14 @@
     <orderEntry type="library" name="Gradle: org.springframework:spring-context:1.2.9" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework:spring-beans:1.2.9" level="project" />
     <orderEntry type="library" name="Gradle: commons-logging:commons-logging:1.0.4" level="project" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../src/main/resources/jdraw-swisscoross-figure.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
   </component>
 </module>

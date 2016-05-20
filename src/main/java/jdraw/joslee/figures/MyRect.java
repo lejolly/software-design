@@ -38,7 +38,7 @@ public class MyRect extends MyFigure {
 
     private MyRect(MyRect myRect) {
         super(myRect.getDrawModel());
-        Rectangle bounds = myRect.getBounds(this);
+        Rectangle bounds = myRect.getBounds();
         rectangle = new Rectangle(bounds.x, bounds.y, bounds.width, bounds.height);
         createHandles();
     }
@@ -77,7 +77,7 @@ public class MyRect extends MyFigure {
     }
 
     @Override
-    public Rectangle getBounds(Object caller) {
+    public Rectangle getBounds() {
         return rectangle.getBounds();
     }
 

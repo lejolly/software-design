@@ -41,7 +41,7 @@ public class MyOval extends MyFigure {
 
     private MyOval(MyOval myOval) {
         super(myOval.getDrawModel());
-        Rectangle bounds = myOval.getBounds(this);
+        Rectangle bounds = myOval.getBounds();
         oval = new Ellipse2D.Double(bounds.x, bounds.y, bounds.width, bounds.height);
         createHandles();
     }
@@ -80,7 +80,7 @@ public class MyOval extends MyFigure {
     }
 
     @Override
-    public Rectangle getBounds(Object caller) {
+    public Rectangle getBounds() {
         return oval.getBounds();
     }
 

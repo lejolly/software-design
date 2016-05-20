@@ -9,8 +9,6 @@ import jdraw.framework.DrawContext;
 import jdraw.joslee.figures.MyFigure;
 import jdraw.joslee.figures.MyRect;
 
-import javax.swing.*;
-
 /**
  * This tool defines a mode for drawing rectangles.
  *
@@ -20,23 +18,13 @@ import javax.swing.*;
  */
 public class MyRectTool extends MyDrawTool {
 
-    public MyRectTool(DrawContext context) {
-        super(context);
+    public MyRectTool(DrawContext context, String name, String icon) {
+        super(context, name, icon);
     }
 
     @Override
     MyFigure getNewFigure(int x, int y) {
         return new MyRect(super.getModel(), x, y, 0, 0);
-    }
-
-    @Override
-    public Icon getIcon() {
-        return new ImageIcon(getClass().getResource(IMAGES + "rectangle.png"));
-    }
-
-    @Override
-    public String getName() {
-        return "Rectangle";
     }
 
 }

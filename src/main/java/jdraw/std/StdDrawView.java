@@ -243,7 +243,7 @@ public final class StdDrawView extends JComponent implements DrawView {
 	public Dimension getPreferredSize() {
 		java.awt.Rectangle r = new java.awt.Rectangle();
 		for (Figure f : model.getFigures()) {
-			r.add(f.getBounds(this));
+			r.add(f.getBounds());
 		}
 
 		Dimension size = new Dimension();

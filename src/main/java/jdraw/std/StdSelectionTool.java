@@ -218,7 +218,7 @@ public class StdSelectionTool implements DrawTool {
 				new Rectangle(min(sx0, sx1), min(sy0, sy1), abs(sx1 - sx0), abs(sy1 - sy0));
 							  
 			for (Figure f : view.getModel().getFigures()) {
-				if (contains(selRectangle, f.getBounds(this))) {
+				if (contains(selRectangle, f.getBounds())) {
 					sel.add(f);					
 				}
 			}

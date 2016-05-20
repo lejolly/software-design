@@ -39,8 +39,8 @@ public abstract class DecoratorFigure extends MyFigure {
     }
 
     @Override
-    public Rectangle getBounds(Object caller) {
-        return innerFigure.getBounds(caller);
+    public Rectangle getBounds() {
+        return innerFigure.getBounds();
     }
 
     @Override
