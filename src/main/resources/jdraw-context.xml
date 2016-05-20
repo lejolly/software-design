@@ -8,9 +8,7 @@
 		<constructor-arg ref="drawModel"/>
 	</bean>
 
-	<bean id="drawContext" class="jdraw.std.StdContext" singleton="false"
-		init-method="initGUI"
-	>
+	<bean id="drawContext" class="jdraw.std.StdContext" singleton="false" init-method="initGUI">
 		<constructor-arg ref="drawView"/>
 
 		<property name="width" value="600"/>
@@ -24,11 +22,9 @@
                 <null />
                 <ref bean="ernst-swiss"/>
                 <ref bean="ernst-tetraeder"/>
-
 			</list>
 		</constructor-arg>
 	</bean>
-
 
 	<bean id="rectangle" class="jdraw.joslee.figures.drawTools.MyRectToolFactory">
 		<property name="name" value="Rectangle"/>
@@ -54,5 +50,4 @@
         <property name="name" value="Tetraeder"/>
         <property name="iconName" value="tetraeder.png"/>
     </bean>
-
 </beans>
